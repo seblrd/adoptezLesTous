@@ -3,20 +3,14 @@ import axios from "axios";
 const headers = {
   "Content-Type": "application/json"
 };
-const burl = "http://localhost:3000";
+const burl = "http://localhost:8000";
 
 export default {
   login: function(email, password) {
     return axios.post(
       `${burl}/auth/login`,
-      {
-        email,
-        password
-      },
-      {
-        headers: headers
-      }
-    );
+      {email,password},
+      {headers: headers})
   },
   register: function(send) {
     return axios.post(`${burl}/auth/register`, send, { headers: headers });
@@ -25,34 +19,18 @@ export default {
   isAuth: function() {
     return localStorage.getItem("token") !== null;
   },
-  postMessage: function(body,username) {
+  postMessage: function(body) {
     return axios.post(
-      `${burl}/dashboard/postMessage`,
+      `${burl}/postMessage`,
       {
-        body,
-        username
-      },
-    );
-  },
-  getMessage: function() {
-    return axios.post(`${burl}/dashboard/getMessage`);
-  },
-  logout: function() {
-    localStorage.clear();
-  },
-  editOneMessage: function(id,body) {
-    return axios.post(
-      `${burl}/dashboard/editOneMessage/:id`,
-      {
-        id,
         body
       },
     );
   },
-  getLastMessage: function() {
-    return axios.get(`${burl}/dashboard/getLastMessage`);
+  getMessage: function() {
+    return axios.post(`${burl}/getMessage`);
   },
-  getLastUser: function() {
-    return axios.get(`${burl}/auth/getLastUser`);
+  logout: function() {
+    localStorage.clear();
   }
 };

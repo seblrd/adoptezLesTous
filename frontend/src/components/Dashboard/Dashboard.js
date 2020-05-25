@@ -1,29 +1,21 @@
 import React from "react";
-import { Button } from "react-bootstrap";
 import API from "../../utils/API";
-
+import {Card} from "react-bootstrap"
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 export class Dashboard extends React.Component {
   state = {
     loading: true,
     allMessage: [],
     bodyPostMessage: "",
-    username: localStorage.getItem("username"),
-    editPost:""
+    username: localStorage.getItem("username")
   }
-  username = localStorage.getItem("username");
-  postMessage = async() => {
-    const { bodyPostMessage } = this.state;
-    const { username } = this.state;
-    if(!bodyPostMessage || bodyPostMessage.length === 0) return;
-    try {
-      const { data } = await API.postMessage({ bodyPostMessage, username });
-      console.log("Message Envoyé");
-      console.log(data)
-      window.location = "/dashboard";
-    } catch (error) {
-      console.error("erreur envoi to backend" + error);
-    }
-  };  
+  handleChange = (event) => {
+    this.setState({
+      [event.target.id]: event.target.value
+    });
+  };
   async componentDidMount(){
     const response = await API.getMessage();
     const data = response.data;
@@ -33,42 +25,38 @@ export class Dashboard extends React.Component {
       return a>b ? -1 : a<b ? 1 : 0;
     })}
     this.setState({ allMessage: sortedData.message, loading: false });
+    console.log(this.state.allMessage)
   }
-  handleChange = (event) => {
-    this.setState({
-      [event.target.id]: event.target.value
-    });
-  };
-  editButton = (postUsername, oldBody, postId)=>{
-    if(localStorage.getItem("username").localeCompare(postUsername) === 0)
-    {
-
-      return (
-        <div className="gridContainer">
-          <Button onClick={() => this.setState({editPost:postId})} type="button" className="gridItem" type="submit" >Editer</Button>
-          <Button onClick={()=> this.deletePost(oldBody)} type="button" className="gridItem" type="submit">Supprimer</Button>
-        </div>
-      );
-    }
-  };
-  editMessage(oldBody){
-    return(
-    <div className="form-group" style={{maxWidth: 30 +"em",  margin: "auto", marginTop: 30+"px"}}>
-    <textarea className="form-control" id="bodyEditMessage" name="bodyEditMessage" rows="3" value={ oldBody }></textarea>
-    <Button type="button" className="btn btn-primary" type="submit">
-      Envoyer votre message
-    </Button>
-  </div>)
-  } 
-
   render() {
-    const { bodyPostMessage } = this.state;
     return (
       <div>
-        <div className="Dashboard">
-        <h2>Tous les animaux !</h2>
-        </div>
-          <div> Tweet du jour !</div>
+        <Container>
+          <div className="Dashboard">
+            <h2> Adoptez les ! !</h2>
+            <Row>
+              <div>            
+                {this.state.allMessage.map(message => (
+                  <Col sm={4} md="auto" key={message._id}>
+                    <Card style={{ width: 'auto' }}>
+                      <Card.Img width="100%" src={require("../../assets/picPug.jpg")} />
+                      <div>
+                        <Card.Body>
+                          <div style={{marginBottom:1+"em",marginTop:.5+"em"}}>{message.petName}, {message.petAge} an(s)</div>
+                        </Card.Body>
+                          <small>
+                           Par {message.username}, le "{message.date}"
+                          </small>
+                      </div>
+                    </Card>
+                  </Col>
+                ))}
+              </div>
+            </Row>
+            <div>
+            </div>
+          </div>
+        </Container>
+        <h2>Les derniers adoptés !</h2>
       </div>
     );
     

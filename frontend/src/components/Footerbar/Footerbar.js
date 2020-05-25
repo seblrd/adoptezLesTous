@@ -4,8 +4,8 @@ export class Footerbar extends React.Component {
 
     render() {
         return (
-          <div className="Footerbar">
-            Tous droits réservés à la Coding de février 2020 !
+          <div className="App-footer">
+            <p>Le site ou toutou est beau ! :O</p>
           </div>
         );
       }

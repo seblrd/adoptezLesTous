@@ -37,6 +37,7 @@ async function login (req, res, next) {
     User.findOne({ email: req.body.email })
       .then(user => {
         if (!user) {
+          // return res.error('Utilisateur non trouvé !').status(401);
           return res.status(401).json({ error: 'Utilisateur non trouvé !' });
         }
         bcrypt.compare(req.body.password, user.password)

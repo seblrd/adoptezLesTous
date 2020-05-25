@@ -14,7 +14,6 @@ async function postMessage (req, res, next) {
     .then(() => res.status(201).json({ message: 'Message posted' }))
     .catch(error => res.status(500).json({ error }));
 };
-
 async function getMessage (req, res, next) {
   Message.find()
     .then(message => {
