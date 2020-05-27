@@ -5,13 +5,10 @@ async function postMessage (req, res, next) {
   date = today.toLocaleDateString();
   time = today.toLocaleTimeString("fr-FR");
   dateTime = date+' '+time;
-  const messageObject = JSON.parse(req.body.dataMessage)
-  console.log(messageObject)
   const message = new Message({
-    ...messageObject,
+    ...req.body.dataMessage,
     date: dateTime,
-    lastModif: dateTime,
-    imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+    lastModif: dateTime
   });
   message.save()
     .then(() => res.status(201).json({ message: 'Message posted' }))
@@ -52,6 +49,7 @@ async function deleteOneMessage (req, res, next) {
     .then(() => res.status(200).json({message: "Message supprimé"}))
     .catch(error => res.status(400).json({error}));
 };
+
 
 exports.postMessage = postMessage;
 exports.getMessage = getMessage;
