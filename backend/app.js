@@ -32,7 +32,7 @@ app.use(function(req, res, next) {
 });
 app.use('/', dashboardRouter);
 app.use('/auth', authRouter);
-
+app.use("/images", express.static(path.join(__dirname,'images')));
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

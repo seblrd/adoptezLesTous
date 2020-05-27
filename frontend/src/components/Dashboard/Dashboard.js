@@ -1,15 +1,14 @@
 import React from "react";
 import API from "../../utils/API";
-import {Card} from "react-bootstrap"
-import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
+import {Container, Row, Col, Card} from 'react-bootstrap'
+
 export class Dashboard extends React.Component {
   state = {
     loading: true,
     allMessage: [],
     bodyPostMessage: "",
-    username: localStorage.getItem("username")
+    username: localStorage.getItem("username"),
+    dataOneMessage:""
   }
   handleChange = (event) => {
     this.setState({
@@ -25,9 +24,13 @@ export class Dashboard extends React.Component {
       return a>b ? -1 : a<b ? 1 : 0;
     })}
     this.setState({ allMessage: sortedData.message, loading: false });
-    console.log(this.state.allMessage)
+  }
+  async getOneMessage(id){
+    localStorage.setItem('idMess', id)
+    window.location = "/"+ id;    
   }
   render() {
+    // const images = require.context()
     return (
       <div>
         <Container>
@@ -36,9 +39,9 @@ export class Dashboard extends React.Component {
             <Row>
               <div>            
                 {this.state.allMessage.map(message => (
-                  <Col sm={4} md="auto" key={message._id}>
-                    <Card style={{ width: 'auto' }}>
-                      <Card.Img width="100%" src={require("../../assets/picPug.jpg")} />
+                  <Col sm={4} md="auto" key={message._id} >
+                    <Card style={{ width: 'auto' }} onClick={()=> this.getOneMessage(message._id)} >
+                      <Card.Img width="100%" src={'/assets/' + message.petPic} />
                       <div>
                         <Card.Body>
                           <div style={{marginBottom:1+"em",marginTop:.5+"em"}}>{message.petName}, {message.petAge} an(s)</div>

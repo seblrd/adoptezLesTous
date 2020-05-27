@@ -23,11 +23,7 @@ export class Register extends React.Component {
       localStorage.setItem("connected", true);
       window.location = "/";
     } catch (error) {
-      this.state.hasError = true;
-      this.state.errorMessage = error.response.data.error;
-    }
-    if(this.state.hasError === true){
-      alert(this.state.errorMessage)
+      alert( error.response.data.error)
     }
   };
   handleChange = (event) => {
@@ -38,8 +34,8 @@ export class Register extends React.Component {
   render() {
     const { email, password, cpassword, username } = this.state;
     return (
-      <div className="Login">
-        <FormGroup controlId="email" bsSize="large">
+      <div className="col-md-6 col-md-offset-3">
+        <FormGroup controlId="email" size="large">
           <FormLabel>Email</FormLabel>
           <FormControl
             autoFocus
@@ -48,7 +44,7 @@ export class Register extends React.Component {
             onChange={this.handleChange}
           />
         </FormGroup>
-        <FormGroup controlId="password" bsSize="large">
+        <FormGroup controlId="password" size="large">
           <FormLabel>Password</FormLabel>
           <FormControl
             value={password}
@@ -56,7 +52,7 @@ export class Register extends React.Component {
             type="password"
           />
         </FormGroup>
-        <FormGroup controlId="cpassword" bsSize="large">
+        <FormGroup controlId="cpassword" size="large">
           <FormLabel>Confirm Password</FormLabel>
           <FormControl
             value={cpassword}
@@ -64,7 +60,7 @@ export class Register extends React.Component {
             type="password"
           />
         </FormGroup>
-        <FormGroup controlId="username" bsSize="large">
+        <FormGroup controlId="username" size="large">
           <FormLabel>Username</FormLabel>
           <FormControl
             autoFocus
@@ -73,7 +69,7 @@ export class Register extends React.Component {
             type="string"
           />
         </FormGroup>
-        <Button onClick={this.send} block bsSize="large" type="submit">
+        <Button onClick={this.send} block size="large" type="submit">
           Inscription
         </Button>
       </div>

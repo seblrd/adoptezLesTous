@@ -20,13 +20,8 @@ export class Login extends React.Component {
       localStorage.setItem("connected", true);
       window.location = "/";
     } catch (error) {
-      this.state.hasError = true;
-      this.state.errorMessage = error.response.data.error;
+      alert(error.response.data.error)
     }
-    if(this.state.hasError === true){
-      alert(this.state.errorMessage)
-    }
-    console.log(this.state.hasError)
   };
   dispErr = ()=>{
     return(
@@ -41,27 +36,27 @@ export class Login extends React.Component {
   render() {
     const { email, password } = this.state;
     return (      
-      <div>
-          <FormGroup controlId="email" bsSize="large">
-            <FormLabel>Email</FormLabel>
-            <FormControl
-              autoFocus
-              type="email"
-              value={email}
-              onChange={this.handleChange}
-            />
-          </FormGroup>
-          <FormGroup controlId="password" bsSize="large">
-            <FormLabel>Password</FormLabel>
-            <FormControl
-              value={password}
-              onChange={this.handleChange}
-              type="password"
-            />
-          </FormGroup>
-          <Button onClick={this.send} block bsSize="large" type="submit">
-            Connexion
-          </Button>
+      <div className="col-md-6 col-md-offset-3">
+        <FormGroup controlId="email">
+          <FormLabel>Email</FormLabel>
+          <FormControl
+            autoFocus
+            type="email"
+            value={email}
+            onChange={this.handleChange}
+          />
+        </FormGroup>
+        <FormGroup controlId="password">
+          <FormLabel>Password</FormLabel>
+          <FormControl
+            value={password}
+            onChange={this.handleChange}
+            type="password"
+          />
+        </FormGroup>
+        <Button onClick={this.send} type="submit">
+          Connexion
+        </Button>
       </div>
     );
   }

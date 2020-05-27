@@ -1,6 +1,6 @@
 import React from "react";
-import { Button } from "react-bootstrap";
 import API from "../../utils/API";
+import {Nav} from 'react-bootstrap'
 
 export class Headerbar extends React.Component {
   state = {
@@ -14,28 +14,53 @@ export class Headerbar extends React.Component {
     if(this.state.connected === 'true')
     {
       return (
-        <div className="App-header-button">
-          <Button className='Button' onClick={this.disconnect} >Se déconnecter</Button>
+        <div>          
+          <Nav.Item>
+            <Nav.Link href="/account">Mon compte</Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link onClick={this.disconnect} >Se déconnecter</Nav.Link>
+          </Nav.Item>
         </div>
       )
     } 
     return (
-      <div className="App-header-button">        
-        <Button className= "Button" href="/login">Se connecter</Button>
-        <Button className= "Button" href="/register">S'inscrire</Button>
+      <div>
+        <Nav.Item>
+          <Nav.Link href="/login">Connexion</Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link href="/register">S'inscrire</Nav.Link>
+        </Nav.Item>
       </div>
     )
   }
   render() {
     return (
-      <header className="App-header">
-        <div className="App-header-opacity">
-          <div className="App-header-title">
-            {this.authButton()}
-            <div><h1>Adoptez les Tous !</h1></div>
-          </div>
-            <div><Button className= "Button" href="/">Home</Button></div>
+      <header >
+        <div className="App-header">
+          <div className="App-header-opacity">
+            <div className="App-header-title">
+              <div><h1>Adoptez les Tous !</h1></div>
             </div>
+            <div>
+              <Nav justify="true" variant="tabs" style={{fontSize:0.6+'em',marginTop: 1+'em'}} defaultActiveKey={window.location.pathname} >
+                <Nav.Item>
+                  <Nav.Link href="/">Accueil</Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                  <Nav.Link href="/newPet">Nouvel animal</Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                  <Nav.Link href="/find">Rechercher</Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                  {this.authButton()}
+                </Nav.Item>
+              </Nav>
+            </div>
+          </div>
+        </div>
       </header>
     );
   }

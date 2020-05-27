@@ -19,11 +19,11 @@ export default {
   isAuth: function() {
     return localStorage.getItem("token") !== null;
   },
-  postMessage: function(body) {
+  postMessage: function(dataMessage) {
     return axios.post(
       `${burl}/postMessage`,
       {
-        body
+        dataMessage
       },
     );
   },
@@ -32,5 +32,8 @@ export default {
   },
   logout: function() {
     localStorage.clear();
-  }
+  },
+  getOneMessage: function(_id) {
+    return axios.post(`${burl}/getOneMessage/`+ _id);
+  },
 };

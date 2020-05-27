@@ -5,10 +5,13 @@ async function postMessage (req, res, next) {
   date = today.toLocaleDateString();
   time = today.toLocaleTimeString("fr-FR");
   dateTime = date+' '+time;
+  const messageObject = JSON.parse(req.body.dataMessage)
+  console.log(messageObject)
   const message = new Message({
-    ...req.body,
+    ...messageObject,
     date: dateTime,
-    lastModif: dateTime
+    lastModif: dateTime,
+    imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
   });
   message.save()
     .then(() => res.status(201).json({ message: 'Message posted' }))
@@ -32,11 +35,15 @@ async function getOneMessage (req, res, next) {
       }
       res.status(201).json({ message });
     })
-    .catch(error => res.status(500).json({ error }));
+    .catch(error => res.status(500).json({ error:"Aucun résultat pour cet id là." }));
 };
 
 async function editOneMessage (req, res, next) {
-  Message.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id})
+  today = new Date();
+  date = today.toLocaleDateString();
+  time = today.toLocaleTimeString("fr-FR");
+  dateTime = date+' '+time;
+  Message.updateOne({ _id: req.params.id }, { ...req.body, lastModif: dateTime, _id: req.params.id})
     .then(() => res.status(201).json({message: "Message modifié"}))
     .catch(error => res.status(400).json({error}));
 };
@@ -45,7 +52,6 @@ async function deleteOneMessage (req, res, next) {
     .then(() => res.status(200).json({message: "Message supprimé"}))
     .catch(error => res.status(400).json({error}));
 };
-
 
 exports.postMessage = postMessage;
 exports.getMessage = getMessage;

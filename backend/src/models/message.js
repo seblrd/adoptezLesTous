@@ -5,11 +5,12 @@ const messageSchema = mongoose.Schema({
   description: { type: String, required: true },
   petLocation: { type: String, required: true },
   petPic: { type: String, required: true },
-  petName: { type: String, required: false },
+  petName: { type: String, required: true },
   petType: { type: String, required: true },
-  petAge: { type: Number, required: false },
+  petAge: { type: Number, required: true },
   petBreed: { type: String, required: false },
   date: {type: String, required: true},
+  petSexe: {type: String, required: true},
   lastModif: {type: String, required: true}
 });
 

@@ -3,9 +3,11 @@ import { Route, Switch } from "react-router-dom";
 import { Dashboard } from "./components/Dashboard/Dashboard.js";
 import { Login } from "./components/Login/Login.js";
 import { Register } from "./components/Register/Register.js";
-// import { PrivateRoute } from "./components/PrivateRoute.js";
+import { PrivateRoute } from "./components/PrivateRoute.js";
 import { Footerbar } from "./components/Footerbar/Footerbar.js";
 import { Headerbar } from "./components/Headerbar/Headerbar.js";
+import { DetailMessage } from "./components/DetailMessage/DetailMessage.js";
+import { NewPet } from "./components/NewPet/NewPet.js";
 import "./App.css";
 class App extends Component {
   render() {
@@ -17,6 +19,8 @@ class App extends Component {
                   <Route exact path="/login" component={Login} />
                   <Route exact path="/register" component={Register} />
                   <Route exact path="/" component={Dashboard} />
+                  <PrivateRoute path="/newPet" component={NewPet} />
+                  <Route exact path="/:id" component={DetailMessage} />
               </Switch>
           </div>
           < Footerbar />
