@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 const dashboardCtrller = require('../controllers/dashboardController');
 const multer = require("../middleware/multer-config")
+// const multer = require('multer');
+// const upload = multer({dest: 'images/'})
 const auth = require("../middleware/auth")
 /* GET users listing. */
 

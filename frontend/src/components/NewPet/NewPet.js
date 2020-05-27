@@ -24,9 +24,8 @@ export class NewPet extends React.Component {
       await API.postMessage({ petSexe,username,description,petLocation,petPic,petName,petType,petAge,petBreed });
       alert("Message posté")
     } catch (error) {
-      // var myError = error.response.data.error;
       console.log(error)
-      alert(error.response.data.error._message)
+      alert(error, error.response.data.error._message)
     }
   };
   handleChange = (event) => {

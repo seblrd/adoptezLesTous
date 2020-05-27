@@ -9,6 +9,7 @@ const messageSchema = mongoose.Schema({
   petType: { type: String, required: true },
   petAge: { type: Number, required: true },
   petBreed: { type: String, required: false },
+  petBreed: { type: String, required: false },
   date: {type: String, required: true},
   petSexe: {type: String, required: true},
   lastModif: {type: String, required: true}

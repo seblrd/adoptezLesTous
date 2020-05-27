@@ -6,9 +6,10 @@ async function postMessage (req, res, next) {
   time = today.toLocaleTimeString("fr-FR");
   dateTime = date+' '+time;
   const message = new Message({
-    ...req.body.dataMessage,
+    ...req.body,
     date: dateTime,
-    lastModif: dateTime
+    lastModif: dateTime,
+    petPic: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
   });
   message.save()
     .then(() => res.status(201).json({ message: 'Message posted' }))

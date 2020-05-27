@@ -21,11 +21,7 @@ export default {
   },
   postMessage: function(dataMessage) {
     return axios.post(
-      `${burl}/postMessage`,
-      {
-        dataMessage
-      },
-    );
+      `${burl}/postMessage`,dataMessage);
   },
   getMessage: function() {
     return axios.post(`${burl}/getMessage`);

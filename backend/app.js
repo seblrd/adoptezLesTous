@@ -16,6 +16,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// view engine setup
+app.set('views', path.join(__dirname + "/src", 'views'));
+app.set('view engine', 'jade');
 //Définition des CORS
 app.use(function(req, res, next) {
   res.setHeader(
