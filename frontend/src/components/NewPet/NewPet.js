@@ -5,23 +5,23 @@ import API from "../../utils/API";
 export class NewPet extends React.Component {
   state = {
     username: localStorage.getItem('username'),
-    description: '',
-    petLocation: '',
-    petPic: '',
-    petName: '',
+    description: 'description',
+    petLocation: 'rennes',
+    petImg: '',
+    petName: 'Dobby',
     petType: 'chien',
-    petAge: '',
-    petBreed: '',
+    petAge: 0,
+    petBreed: 'Labrador',
     petSexe: 'male',
   };
   send = async () => {
     const { petSexe,description,username,petLocation,petName,petType,petAge,petBreed } = this.state; 
-    var { petPic } = this.state; 
+    var { petImg } = this.state; 
     try{
-      var petPicName = petPic.split(/[\\]/)
-      var length = petPicName.length -1
-      petPic = petPicName[length]
-      await API.postMessage({ petSexe,username,description,petLocation,petPic,petName,petType,petAge,petBreed });
+      // var petPicName = petImg.split(/[\\]/)
+      // var length = petPicName.length -1
+      // petImg = petPicName[length]
+      await API.postMessage({ petSexe,username,description,petLocation,petImg,petName,petType,petAge,petBreed });
       alert("Message posté")
     } catch (error) {
       console.log(error)
@@ -33,8 +33,11 @@ export class NewPet extends React.Component {
       [event.target.id]: event.target.value
     });
   };
+  fileSelectedHaneler = (event)=>{
+    this.setState({petImg: event.target.files[0]})
+  }
   render() {
-    const{ description,petLocation,petPic,petName,petType,petAge,petBreed,petSexe } = this.state; 
+    const{ description,petLocation,petImg,petName,petType,petAge,petBreed,petSexe } = this.state; 
     return (
       <div className="col-md-6 col-md-offset-3">
       <h2>Information de l'animal !</h2>
@@ -94,17 +97,18 @@ export class NewPet extends React.Component {
           </Col>
         </Form.Group>
 
-        <Form.Group controlId="petPic" as={Row}>
+        <Form.Group controlId="petImg" as={Row}>
           <Form.Label column="true" sm="5">Image*</Form.Label>
           <Col sm="7">
-            <Form.File
-              bsCustomPrefix="okay"
-              value={petPic}
+            {/* <Form.File
+              value={petImg}
               onChange={this.handleChange}
-            />
+            /> */}
+            <input type="file" onChange={this.fileSelectedHaneler}/>
           </Col>
-          <Form.Label column="true" sm="5"> <small>Uniquement format jpg, jpeg, png</small></Form.Label>
+          <Form.Label column="true" sm="auto"> <small row="true">Uniquement format jpg, jpeg, png. (5mo maximum)</small></Form.Label>
         </Form.Group>
+        
 
         <Form.Group controlId="petBreed" as={Row}>
           <Form.Label column="true" sm="5">Race</Form.Label>

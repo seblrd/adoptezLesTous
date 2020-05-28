@@ -29,7 +29,7 @@ export class DetailMessage extends React.Component {
         <Container>
         <div>
             <Card style={{ width: 'auto' }} >
-              <Card.Img width="100%" src={'/assets/' + data.petPic} />
+              <Card.Img width="300" src={data.petPic} />
               <div>
                 <Card.Body>
                   <div style={{marginBottom:1+"em",marginTop:.5+"em"}}>

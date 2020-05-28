@@ -5,6 +5,7 @@ async function postMessage (req, res, next) {
   date = today.toLocaleDateString();
   time = today.toLocaleTimeString("fr-FR");
   dateTime = date+' '+time;
+  console.log(req.fd)
   const message = new Message({
     ...req.body,
     date: dateTime,

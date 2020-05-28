@@ -20,8 +20,13 @@ export default {
     return localStorage.getItem("token") !== null;
   },
   postMessage: function(dataMessage) {
+    const fd = new FormData();
+    fd.append("image",dataMessage.petImg, dataMessage.petImg.name)
+    // console.log(dataMessage.petImg.name)
     return axios.post(
-      `${burl}/postMessage`,dataMessage);
+      `${burl}/postMessage`,dataMessage, fd)
+      .then(res=>{console.log("Succes"+res)})
+      .catch(error=>{console.log('Error', error)})
   },
   getMessage: function() {
     return axios.post(`${burl}/getMessage`);

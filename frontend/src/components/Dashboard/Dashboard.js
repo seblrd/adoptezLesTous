@@ -41,7 +41,7 @@ export class Dashboard extends React.Component {
                 {this.state.allMessage.map(message => (
                   <Col sm={4} md="auto" key={message._id} >
                     <Card style={{ width: 'auto' }} onClick={()=> this.getOneMessage(message._id)} >
-                      <Card.Img width="100%" src={'/assets/' + message.petPic} />
+                      <Card.Img width="300" src={message.petPic} />
                       <div>
                         <Card.Body>
                           <div style={{marginBottom:1+"em",marginTop:.5+"em"}}>{message.petName}, {message.petAge} an(s)</div>
