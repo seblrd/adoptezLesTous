@@ -4,13 +4,13 @@ async function postMessage (req, res, next) {
   today = new Date();
   date = today.toLocaleDateString();
   time = today.toLocaleTimeString("fr-FR");
-  dateTime = date+' '+time;
-  console.log(req.fd)
+  dateTime = date +' '+ time;
   const message = new Message({
     ...req.body,
     date: dateTime,
     lastModif: dateTime,
-    petPic: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+    adopted: false,
+    petPic: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`//${req.file.filename}
   });
   message.save()
     .then(() => res.status(201).json({ message: 'Message posted' }))

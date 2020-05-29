@@ -44,7 +44,7 @@ export class Headerbar extends React.Component {
               <div><h1>Adoptez les Tous !</h1></div>
             </div>
             <div>
-              <Nav justify="true" variant="tabs" style={{fontSize:0.6+'em',marginTop: 1+'em'}} defaultActiveKey={window.location.pathname} >
+              <Nav justify="true" variant="pills" style={{fontSize:0.6+'em',marginTop: 1+'em'}} defaultActiveKey={window.location.pathname} >
                 <Nav.Item>
                   <Nav.Link href="/">Accueil</Nav.Link>
                 </Nav.Item>

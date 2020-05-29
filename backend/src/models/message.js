@@ -12,7 +12,8 @@ const messageSchema = mongoose.Schema({
   petBreed: { type: String, required: false },
   date: {type: String, required: true},
   petSexe: {type: String, required: true},
-  lastModif: {type: String, required: true}
+  lastModif: {type: String, required: true},
+  adopted: {type: String, required: true}
 });
 
 module.exports = mongoose.model('Message', messageSchema);

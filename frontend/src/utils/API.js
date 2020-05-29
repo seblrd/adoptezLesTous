@@ -1,5 +1,5 @@
 import axios from "axios";
-// import { editOneMessage } from "../../../backend/src/controllers/dashboardController";
+import FormData from'form-data';
 const headers = {
   "Content-Type": "application/json"
 };
@@ -20,11 +20,12 @@ export default {
     return localStorage.getItem("token") !== null;
   },
   postMessage: function(dataMessage) {
-    const fd = new FormData();
-    fd.append("image",dataMessage.petImg, dataMessage.petImg.name)
-    // console.log(dataMessage.petImg.name)
-    return axios.post(
-      `${burl}/postMessage`,dataMessage, fd)
+    let form_data = new FormData();
+    for (let key in dataMessage ) {
+      form_data.append(key, dataMessage[key]);
+    }
+    axios.post(
+      `${burl}/postMessage`,form_data)
       .then(res=>{console.log("Succes"+res)})
       .catch(error=>{console.log('Error', error)})
   },
