@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 
 const bcrypt = require('bcrypt');
 async function register (req, res, next) {
-  console.log(req.body)
   if(validate(req, res, next) !='')
   {
     err = validate(req)
