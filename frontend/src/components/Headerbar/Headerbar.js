@@ -5,6 +5,7 @@ import {Nav} from 'react-bootstrap'
 export class Headerbar extends React.Component {
   state = {
     connected: localStorage.getItem("connected"),
+    username: localStorage.getItem("username")
   }
   disconnect = () => {
     API.logout();
@@ -44,6 +45,7 @@ export class Headerbar extends React.Component {
               <div><h1>Adoptez les Tous !</h1></div>
             </div>
             <div>
+              <h4>Bienvenue {this.state.username} !</h4>
               <Nav justify="true" variant="pills" style={{fontSize:0.6+'em',marginTop: 1+'em'}} defaultActiveKey={window.location.pathname} >
                 <Nav.Item>
                   <Nav.Link href="/">Accueil</Nav.Link>

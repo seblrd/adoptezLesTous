@@ -8,6 +8,7 @@ import { Footerbar } from "./components/Footerbar/Footerbar.js";
 import { Headerbar } from "./components/Headerbar/Headerbar.js";
 import { DetailMessage } from "./components/DetailMessage/DetailMessage.js";
 import { NewPet } from "./components/NewPet/NewPet.js";
+import { Account } from "./components/Account/Account.js";
 import "./App.css";
 class App extends Component {
   render() {
@@ -20,10 +21,11 @@ class App extends Component {
                   <Route exact path="/register" component={Register} />
                   <Route exact path="/" component={Dashboard} />
                   <PrivateRoute path="/newPet" component={NewPet} />
+                  <PrivateRoute path="/account" component={Account} />
                   <Route exact path="/:id" component={DetailMessage} />
               </Switch>
           </div>
-          < Footerbar />
+          {/* < Footerbar /> */}
       </div>
     );
   }

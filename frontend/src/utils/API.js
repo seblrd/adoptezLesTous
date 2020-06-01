@@ -38,4 +38,20 @@ export default {
   getOneMessage: function(_id) {
     return axios.post(`${burl}/getOneMessage/`+ _id);
   },
+  modifyMessage: function(id, dataMessage) {
+    let form_data = new FormData();
+    for (let key in dataMessage ) {
+      form_data.append(key, dataMessage[key]);
+    }
+    axios.put(
+      `${burl}/editOneMessage/`+ id, form_data)
+      .then(res=>{console.log("Succes Modify" + res)})
+      .catch(error=>{console.log('Error in modify'+ error)})
+  },
+  deleteMessage: function(id) {
+    axios.delete(
+      `${burl}/deleteOneMessage/`+ id)
+      .then(res=>{console.log("Successfully Deleted" + res)})
+      .catch(error=>{console.log('Error in delete'+ error)})
+  }
 };

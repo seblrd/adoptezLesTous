@@ -3,17 +3,9 @@ import {Button, Form, Row, Col} from "react-bootstrap";
 import API from "../../utils/API";
 
 
-export class NewPet extends React.Component {
+export class Account extends React.Component {
   state = {
     username: localStorage.getItem('username'),
-    description: '',
-    petLocation: '',
-    petImg: '',
-    petName: '',
-    petType: 'chien',
-    petAge: '',
-    petBreed: '',
-    petSexe: 'male',
     usernameId: localStorage.getItem('userId')
   };
   send = async () => {
@@ -34,9 +26,6 @@ export class NewPet extends React.Component {
       [event.target.id]: event.target.value
     });
   };
-  fileSelectedHandler = (event)=>{
-    this.setState({petImg: event.target.files[0]})
-  }
   render() {
     const{ description,petLocation,petName,petType,petAge,petBreed,petSexe } = this.state; 
     return (

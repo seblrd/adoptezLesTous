@@ -10,8 +10,8 @@ async function postMessage (req, res, next) {
     date: dateTime,
     lastModif: dateTime,
     adopted: false,
-    petPic: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`//${req.file.filename}
-  });
+    petPic: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+  });  
   message.save()
     .then(() => res.status(201).json({ message: 'Message posted' }))
     .catch(error => res.status(500).json({ error }));
@@ -42,9 +42,25 @@ async function editOneMessage (req, res, next) {
   date = today.toLocaleDateString();
   time = today.toLocaleTimeString("fr-FR");
   dateTime = date+' '+time;
-  Message.updateOne({ _id: req.params.id }, { ...req.body, lastModif: dateTime, _id: req.params.id})
-    .then(() => res.status(201).json({message: "Message modifié"}))
-    .catch(error => res.status(400).json({error}));
+  if(typeof req.file === 'undefined'){
+    Message.updateOne({ _id: req.params.id },
+      { ...req.body,
+       lastModif: dateTime,
+       _id: req.params.id
+     })
+     .then(() => res.status(201).json({message: "Message modifié"}))
+     .catch(error => res.status(400).json({error}));
+  }
+  if(typeof req.file !== 'undefined'){
+    Message.updateOne({ _id: req.params.id },
+      { ...req.body,
+       lastModif: dateTime,
+       _id: req.params.id,
+       petPic: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+     })
+     .then(() => res.status(201).json({message: "Message modifié"}))
+     .catch(error => res.status(400).json({error}));
+  };
 };
 async function deleteOneMessage (req, res, next) {
   Message.deleteOne({ _id: req.params.id })
