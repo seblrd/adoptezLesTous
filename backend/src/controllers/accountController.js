@@ -16,6 +16,7 @@ async function editInfo (req, res, next) {
   if(validate(req, res, next) !='')
   {
     err = validate(req)
+    console.log(err)
     return res.status(401).json({ error: err });
   }
   if(typeof req.body.password === 'string'){
@@ -46,19 +47,19 @@ function validate(req, res, next)
 {
   err = '';
   reg = '#^[a-zA-Z0-9]+@[a-zA-Z]{2,}\.[a-z]{2,4}$#';
-  if (!req.body.username || req.body.username.length < 3 || req.body.username.length > 10) {
-    err = err  + "Invalid 'username' field, Must have more than 3 characters and less than 10.";
+  if (req.body.username && (req.body.username.length < 3 || req.body.username.length > 20)) {
+    err = err  + "Invalid 'username' field, Must have more than 3 characters and less than 20. \n";
   }
-  if (!req.body.email || !validateEmail(req.body.email)) {
-    err = err + "Invalid 'email' field, Wrong format.";
+  if (req.body.email && !validateEmail(req.body.email)) {
+    err = err + "Invalid 'email' field, Wrong format.\n";
   }
   if(typeof req.body.password === 'string'){
-    if (!req.body.password || req.body.password.length < 8 || req.body.password.length > 20) {
-      err = err + "Invalid 'password' field, can't be blank and password must be between 8 and 20 characters.";
+    if (req.body.password && (req.body.password.length < 8 || req.body.password.length > 20)) {
+      err = err + "Invalid 'password' field, can't be blank and password must be between 8 and 20 characters.\n"
     }
     if(req.body.cpassword !== req.body.password)
     {
-      err = err + "Invalid password confirmation.";
+      err = err + "Invalid password confirmation.\n";
     }
   }
   // if (err != '') {

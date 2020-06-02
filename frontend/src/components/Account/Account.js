@@ -1,124 +1,157 @@
 import React from "react";
-import {Button, Form, Row, Col} from "react-bootstrap";
+import {Button, Form, Row, Col, Card, Container,FormGroup, FormControl, FormLabel} from "react-bootstrap";
 import API from "../../utils/API";
 
 
 export class Account extends React.Component {
   state = {
+    loading: true,
+    userInfo: [],
     username: localStorage.getItem('username'),
-    usernameId: localStorage.getItem('userId')
-  };
-  send = async () => {
-    const { petSexe,description,username,petLocation,petName,petType,petAge,petBreed, usernameId } = this.state; 
-    var { petImg } = this.state; 
-    try{
-      await API.postMessage({ usernameId, petSexe,username,description,petLocation,petName,petType,petAge,petBreed,petImg });
-      console.log("Message posté")
-      alert("Message posté")
-      window.location= "/newPet"
-    } catch (error) {
-      console.log(error)
-      alert(error)
-    }
+    userId: localStorage.getItem('userId'),
+    displayForm: false,
+    modifs: false,
+    email: "",
+    password: "",
+    cpassword: "",
+    username: "",
+    errorMessage:'',
+    phoneNumber:""
   };
   handleChange = (event) => {
     this.setState({
       [event.target.id]: event.target.value
     });
+    this.setState({ modifs: true });
   };
-  render() {
-    const{ description,petLocation,petName,petType,petAge,petBreed,petSexe } = this.state; 
-    return (
-      <div className="col-md-6 col-md-offset-3">
-      <h2>Information de l'animal !</h2>
-      <small>Les champs marqués d'une * sont obligatoire</small>
-      <Form>
-        <Form.Group controlId="petName" as={Row}>
-          <Form.Label column="true" sm="5">Prénom*</Form.Label>
-          <Col sm="7">
-            <Form.Control type="string" placeholder="Dobby" 
-            value={petName}
+  async componentDidMount(){
+    const response = await API.getInfo(this.state.userId);
+    const data = response.data.user;
+    var format = data['phoneNumber'];
+    format = format.match(/.{1,2}/g).join(".")
+    data['phoneNumber'] = format
+    this.setState({ userInfo: data, loading: false });
+  }
+  displayForm(displayForm, props){
+    
+    if (!displayForm) {
+      return null;
+    }
+    var send = async () => {
+      
+      try{
+        if(this.state.modifs === false){
+          throw Error('Aucune Modification')
+        }
+        const { email, password, cpassword, username, phoneNumber } = this.state;
+        await API.editAccount(this.state.userId,{ email, password, cpassword, username, phoneNumber });
+        console.log("Message modifié")
+        // alert("Message modifié")
+      } catch (error) {
+        console.log('Les modifications ont échouées' + error)
+        alert("Les modifications ont échouées: \n" + error)
+      }
+    };
+    const { email, password, cpassword, username, phoneNumber } = this.state;
+    return(
+      <div className="col-md-8 col-md-offset-2">
+        <small>Remplissez uniquement les champs que vous voulez modifier.</small>
+        <Form style={{marginTop:"1em"}}>
+        <FormGroup controlId="email" size="large">
+          <FormLabel>Email</FormLabel>
+          <FormControl
+            autoFocus
+            type="email"
+            value={email}
             onChange={this.handleChange}
+            placeholder="adoptezLesTous@alt.fr" 
+          />
+        </FormGroup>
+        <FormGroup controlId="password" size="large">
+          <FormLabel>Mot de Passe</FormLabel>
+          <FormControl
+            value={password}
+            onChange={this.handleChange}
+            type="password"
+            placeholder="Mot de passe..." 
+          />
+        </FormGroup>
+        <FormGroup controlId="cpassword" size="large">
+          <FormLabel> Confirmer Mot de Passe</FormLabel>
+          <FormControl
+            value={cpassword}
+            onChange={this.handleChange}
+            type="password"
+            placeholder="Confirmer mot de passe..." 
             />
-          </Col>
-        </Form.Group>
-
-        <Form.Group controlId="petSexe" as={Row}>
-          <Form.Label column="true" sm="5">Sexe*</Form.Label>
-          <Col sm="7">
-            <Form.Control as="select"
-            value={petSexe}
-            onChange={this.handleChange}>
-              <option value="male">Male</option>
-              <option value="femelle">Femelle</option>
-            </Form.Control>
-          </Col>
-        </Form.Group>
-
-        <Form.Group controlId="description" as={Row}>
-          <Form.Label column="true" sm="5">Description*</Form.Label>
-          <Col column="true" sm="7">
-            <Form.Control as="textarea" rows="3" placeholder="Dobby est très sage, ..."
-            value={description}
-            onChange={this.handleChange}></Form.Control>
-          </Col>
-        </Form.Group>
-
-        <Form.Group controlId="petAge" as={Row}>
-          <Form.Label column="true" sm="5">Age*</Form.Label>
-          <Col sm="7">
-            <Form.Control type="number" placeholder="5" 
-            value={petAge}
-            onChange={this.handleChange}></Form.Control>
-          </Col>
-        </Form.Group>
-
-        <Form.Group controlId="petType" as={Row}>
-          <Form.Label column="true" sm="5">Type d'animal*</Form.Label>
-          <Col sm="7">
-            <Form.Control as="select" 
-            value={petType}
-            onChange={this.handleChange}>
-              <option value='dog'>Chien</option>
-              <option value='cat'>Chat</option>
-              <option value='bird'>Oiseau</option>
-              <option value='fish'>Poisson</option>
-            </Form.Control>
-          </Col>
-        </Form.Group>
-
-        <Form.Group controlId="petImg" as={Row}>
-          <Form.Label column="true" sm="5">Image*</Form.Label>
-          <Col sm="7">
-            <input type="file" onChange={this.fileSelectedHandler}/>
-          </Col>
-          <Form.Label column="true" sm="auto"> <small row="true">Uniquement format jpg, jpeg, png. (5mo maximum)</small></Form.Label>
-        </Form.Group>
-        
-
-        <Form.Group controlId="petBreed" as={Row}>
-          <Form.Label column="true" sm="5">Race</Form.Label>
-          <Col sm="7">
-            <Form.Control type="string" placeholder="Labrador" 
-            value={petBreed}
-            onChange={this.handleChange}/>
-          </Col>
-        </Form.Group>
-
-        <Form.Group controlId="petLocation" as={Row}>
-          <Form.Label column="true" sm="5">Localisation*</Form.Label>
-          <Col sm="7">
-            <Form.Control type="string" placeholder="Rennes" 
-            value={petLocation}
-            onChange={this.handleChange}></Form.Control>
-          </Col>
-        </Form.Group>
-
-      </Form>
-      <Button onClick={this.send} variant="primary" type="submit" >
-        Valider
-      </Button>
+            <Row><small>Obligatoire si vous changer le mot de passe</small></Row>
+        </FormGroup>
+        <FormGroup controlId="username" size="large">
+          <FormLabel>Nom d'utilisateur</FormLabel>
+          <FormControl
+            autoFocus
+            value={username}
+            onChange={this.handleChange}
+            type="string"
+            placeholder="Animalerie Coco" 
+          />
+        </FormGroup>
+        <FormGroup controlId="phoneNumber" size="large">
+          <FormLabel>Numéro de téléphone</FormLabel>
+          <FormControl
+            autoFocus
+            value={phoneNumber}
+            onChange={this.handleChange}
+            type="number"
+            placeholder="06XXXXXXXX"
+          />
+        </FormGroup>
+        </Form>
+        <Button onClick={send} variant="primary" type="submit" >
+          Valider
+        </Button>
       </div>
-    );
+    )
+  };
+  editForm = ()=>{
+    if(this.state.displayForm === false){
+      this.setState({displayForm: true})
+    }
+    else if(this.state.displayForm === true){
+      this.setState({displayForm: false})
+    }
+  }
+  render() {
+    const data = this.state.userInfo;
+    const { email, password, cpassword, username, phoneNumber } = this.state;
+    return (
+      <div>
+          <Container style={{width: "50em"}}>
+            <Col >
+              <Card style={{ width: 'auto' }} >
+                <Card.Header><h4>Mes informations</h4></Card.Header>
+                <Card.Body >
+                  <div  style={{marginBottom:1+"em",marginTop:.5+"em", textAlign:'center'}}>
+                    <Row style={{marginBottom:1+"em"}}>
+                      <Col sm={4}>Email: </Col><Col sm={4}>{data.email} </Col>
+                    </Row>
+                    <Row style={{marginBottom:1+"em"}}>
+                      <Col sm={4}>Nom utilisateur: </Col><Col sm={4}>{data.username} </Col>
+                    </Row>
+                    <Row style={{marginBottom:1+"em"}}>
+                      <Col sm={4}>Mot de passe: </Col><Col sm={4}>******** </Col>
+                    </Row>
+                    <Row style={{marginBottom:1+"em"}}>
+                      <Col sm={4}>Numéro de téléphone: </Col><Col sm={4}>{data.phoneNumber} </Col>
+                    </Row>
+                  </div>
+                </Card.Body>
+                <Button onClick={()=>this.editForm()} >Editer</Button>
+              </Card>
+                  {this.state.displayForm && this.displayForm(this.state.displayForm, data)}
+            </Col>
+          </Container>
+      </div>
+    )
   }
 }

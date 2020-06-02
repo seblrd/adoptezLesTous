@@ -9,16 +9,32 @@ export class DetailMessage extends React.Component {
     allMessage: [],
     bodyPostMessage: "",
     username: localStorage.getItem("username"),
+    userId: localStorage.getItem('userId'),
     dataOneMessage:"",
     isWriter: false,
     displayForm: false,
-    modifs: false
+    modifs: false,
+    phoneNumber:"",
+    email:""
   }
   async componentDidMount(){
     try{
       var id = window.location.pathname.split('/')[1]
       const oneMess = await API.getOneMessage(id);
       this.setState({ dataOneMessage: oneMess.data.message, loading: false })
+
+      const response = await API.getInfo(this.state.dataOneMessage.usernameId);
+      const data = response.data.user;
+      var format = data['phoneNumber'];
+      format = format.match(/.{1,2}/g).join(".")
+      data['phoneNumber'] = format
+      this.setState({
+        userInfo: data,
+        loading: false,
+        username: data.username,
+        phoneNumber: data.phoneNumber,
+        email: data.email 
+      });
       
     } catch(error){
       alert(error)
@@ -187,6 +203,7 @@ export class DetailMessage extends React.Component {
   }
   render() {
     const data = this.state.dataOneMessage;
+    const dataUser = this.state.userInfo;
     const isWriter = this.state.isWriter
     if(data.usernameId === localStorage.getItem("userId")){
       this.state.isWriter = true;
@@ -207,12 +224,14 @@ export class DetailMessage extends React.Component {
                         <li>Localisation: {data.petLocation}</li>
                         <li>Race: {data.petBreed}</li>
                         <li>Sexe: {data.petSexe}</li>
+                        <li>Tel: {this.state.phoneNumber}</li>
+                        <li>email: {this.state.email}</li>
                       </ul>
                     </div>
                   </div>
                 </Card.Body>
                   <small>
-                  Par {data.username}, posté le "{data.date}"
+                  Par {this.state.username}, posté le "{data.date}"
                   </small>
                    {this.editButton(this.state.isWriter)}
                   {this.state.displayForm && this.displayForm(this.state.displayForm, data)}

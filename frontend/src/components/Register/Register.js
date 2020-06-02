@@ -1,10 +1,10 @@
 import React from "react";
-import {Button, FormGroup, FormControl, FormLabel} from "../../../node_modules/react-bootstrap";
+import {Button, FormGroup, FormControl, FormLabel} from "react-bootstrap";
 import API from "../../utils/API";
 
 export class Register extends React.Component {
   state = {
-    email: "hugo@.com",
+    email: "",
     password: "",
     cpassword: "",
     username: "",

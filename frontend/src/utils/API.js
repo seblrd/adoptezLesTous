@@ -45,7 +45,7 @@ export default {
     }
     axios.put(
       `${burl}/editOneMessage/`+ id, form_data)
-      .then(res=>{console.log("Succes Modify" + res)})
+      .then(res=>{console.log("Succes Modify " + res)})
       .catch(error=>{console.log('Error in modify'+ error)})
   },
   deleteMessage: function(id) {
@@ -53,5 +53,14 @@ export default {
       `${burl}/deleteOneMessage/`+ id)
       .then(res=>{console.log("Successfully Deleted" + res)})
       .catch(error=>{console.log('Error in delete'+ error)})
-  }
+  },
+  getInfo: function(_id) {
+    return axios.post(`${burl}/account/getInfo/`+ _id);
+  },
+  editAccount: function(id, dataUser) {
+    axios.put(
+      `${burl}/account/editInfo/`+ id, dataUser)
+      .then(res=>{console.log("Succes Modify", res.data.message)})
+      .catch(error=>{console.log('Error in modify'+ error)})
+  },
 };

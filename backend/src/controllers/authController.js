@@ -13,7 +13,8 @@ async function register (req, res, next) {
       const user = new User({
         ...req.body,
         password: hash,
-        admin: false
+        admin: false,
+        ban: false
       });
       user.save()
         .then(() => res.status(201).json({
@@ -67,8 +68,8 @@ function validate(req, res, next)
 {
   err = '';
   reg = '#^[a-zA-Z0-9]+@[a-zA-Z]{2,}\.[a-z]{2,4}$#';
-  if (!req.body.username || req.body.username.length < 3 || req.body.username.length > 10) {
-    err = err  + "Invalid 'username' field, Must have more than 3 characters and less than 10.";
+  if (!req.body.username || req.body.username.length < 3 || req.body.username.length > 20) {
+    err = err  + "Invalid 'username' field, Must have more than 3 characters and less than 20.";
   }
   if (!req.body.email || !validateEmail(req.body.email)) {
     err = err + "Invalid 'email' field, Wrong format.";
