@@ -63,4 +63,10 @@ export default {
       .then(res=>{console.log("Succes Modify", res.data.message)})
       .catch(error=>{console.log('Error in modify'+ error)})
   },
+  deleteAccount: function(id) {
+    axios.delete(
+      `${burl}/account/deleteAccount/`+ id)
+      .then(res=>{console.log("Successfully Deleted" + res)})
+      .catch(error=>{console.log('Error in delete'+ error)})
+  },
 };

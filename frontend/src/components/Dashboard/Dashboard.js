@@ -7,8 +7,9 @@ export class Dashboard extends React.Component {
     loading: true,
     allMessage: [],
     bodyPostMessage: "",
-    username: localStorage.getItem("username"),
-    dataOneMessage:""
+    username: "",
+    dataOneMessage:"",
+    modfifiedAllMessage:""
   }
   handleChange = (event) => {
     this.setState({
@@ -17,14 +18,22 @@ export class Dashboard extends React.Component {
   };
   async componentDidMount(){
     const response = await API.getMessage();
-    const data = response.data;
+    var data = response.data
     const sortedData = {"message": data.message.sort(function(a, b) {
-      a = new Date(a.date);
-      b = new Date(b.date);
-      return a>b ? -1 : a<b ? 1 : 0;
-    })}
-    this.setState({ allMessage: sortedData.message, loading: false });
-  }
+        a = new Date(a.date);
+        b = new Date(b.date);
+        return a>b ? -1 : a<b ? 1 : 0;
+      })}
+    this.setState({ allMessage: sortedData.message, loading: false});
+    var newData = this.state.allMessage
+    for (var i = 0; i < newData.length; i++){
+      // console.log(newData[i].username)
+      var user = await API.getInfo(newData[i].usernameId);
+      var username = user.data.user.username
+      newData[i].username = username;
+    }
+    this.setState({ allMessage: newData, loading: false});
+  };
   async getOneMessage(id){
     localStorage.setItem('idMess', id)
     window.location = "/"+ id;    
@@ -47,7 +56,7 @@ export class Dashboard extends React.Component {
                           <div style={{marginBottom:1+"em",marginTop:.5+"em"}}>{message.petName}, {message.petAge} an(s)</div>
                         </Card.Body>
                           <small>
-                           Par {message.username}, le "{message.date}"
+                           Par {message.username}, le "{message.lastModif}"
                           </small>
                       </div>
                     </Card>

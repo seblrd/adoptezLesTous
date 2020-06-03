@@ -13,17 +13,23 @@ async function getInfo (req, res, next) {
 };
 
 async function editInfo (req, res, next) {
-  if(validate(req, res, next) !='')
+  var data = [];
+  for(element in req.body){
+    if(req.body[element] !== ''){
+      data[element]=req.body[element]      
+    }
+  }
+  if(validate(data) !='')
   {
-    err = validate(req)
+    err = validate(data)
     console.log(err)
     return res.status(401).json({ error: err });
   }
-  if(typeof req.body.password === 'string'){
-    bcrypt.hash(req.body.password, 10)
+  if(typeof data.password === 'string'){
+    bcrypt.hash(data.password, 10)
     .then((hash=>{
       User.updateOne({ _id: req.params.id },
-        { ...req.body,
+        { ...data,
           _id: req.params.id,          
           password: hash
         })
@@ -34,7 +40,7 @@ async function editInfo (req, res, next) {
   }
   else{
     User.updateOne({ _id: req.params.id },
-      { ...req.body,
+      { ...data,
         _id: req.params.id
       }
       )
@@ -43,21 +49,21 @@ async function editInfo (req, res, next) {
       .catch(error => res.status(400).json({error}));
   }  
 }
-function validate(req, res, next)
+function validate(data)
 {
   err = '';
   reg = '#^[a-zA-Z0-9]+@[a-zA-Z]{2,}\.[a-z]{2,4}$#';
-  if (req.body.username && (req.body.username.length < 3 || req.body.username.length > 20)) {
+  if (data.username && (data.username.length < 3 || data.username.length > 20)) {
     err = err  + "Invalid 'username' field, Must have more than 3 characters and less than 20. \n";
   }
-  if (req.body.email && !validateEmail(req.body.email)) {
+  if (data.email && !validateEmail(data.email)) {
     err = err + "Invalid 'email' field, Wrong format.\n";
   }
-  if(typeof req.body.password === 'string'){
-    if (req.body.password && (req.body.password.length < 8 || req.body.password.length > 20)) {
+  if(typeof data.password === 'string'){
+    if (data.password && (data.password.length < 8 || data.password.length > 20)) {
       err = err + "Invalid 'password' field, can't be blank and password must be between 8 and 20 characters.\n"
     }
-    if(req.body.cpassword !== req.body.password)
+    if(data.cpassword !== data.password)
     {
       err = err + "Invalid password confirmation.\n";
     }

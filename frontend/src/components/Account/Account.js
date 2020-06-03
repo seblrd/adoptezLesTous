@@ -45,8 +45,8 @@ export class Account extends React.Component {
         }
         const { email, password, cpassword, username, phoneNumber } = this.state;
         await API.editAccount(this.state.userId,{ email, password, cpassword, username, phoneNumber });
-        console.log("Message modifié")
-        // alert("Message modifié")
+        console.log("Information(s) modifiée(s)")
+        alert("Information(s) modifiée(s)")
       } catch (error) {
         console.log('Les modifications ont échouées' + error)
         alert("Les modifications ont échouées: \n" + error)
@@ -66,6 +66,16 @@ export class Account extends React.Component {
             onChange={this.handleChange}
             placeholder="adoptezLesTous@alt.fr" 
           />
+        <FormGroup controlId="username" size="large">
+          <FormLabel>Nom d'utilisateur</FormLabel>
+          <FormControl
+            autoFocus
+            value={username}
+            onChange={this.handleChange}
+            type="string"
+            placeholder="Animalerie Coco" 
+          />
+        </FormGroup>
         </FormGroup>
         <FormGroup controlId="password" size="large">
           <FormLabel>Mot de Passe</FormLabel>
@@ -85,16 +95,6 @@ export class Account extends React.Component {
             placeholder="Confirmer mot de passe..." 
             />
             <Row><small>Obligatoire si vous changer le mot de passe</small></Row>
-        </FormGroup>
-        <FormGroup controlId="username" size="large">
-          <FormLabel>Nom d'utilisateur</FormLabel>
-          <FormControl
-            autoFocus
-            value={username}
-            onChange={this.handleChange}
-            type="string"
-            placeholder="Animalerie Coco" 
-          />
         </FormGroup>
         <FormGroup controlId="phoneNumber" size="large">
           <FormLabel>Numéro de téléphone</FormLabel>
@@ -119,6 +119,20 @@ export class Account extends React.Component {
     }
     else if(this.state.displayForm === true){
       this.setState({displayForm: false})
+    }
+  }
+  async deleteAccount(){
+    try{
+      if( window.confirm("Etes-vous sur de vouloir supprimer votre compte ?") ){
+        await API.deleteAccount(this.state.userId);
+        console.log("Suppression réussie")
+        alert("Suppression réussie")
+        API.logout()
+        window.location = "/";
+      }
+    } catch (error) {
+      console.log('Suppression échouée' + error)
+      alert("Suppression échouée: \n" + error)
     }
   }
   render() {
@@ -146,8 +160,9 @@ export class Account extends React.Component {
                     </Row>
                   </div>
                 </Card.Body>
-                <Button onClick={()=>this.editForm()} >Editer</Button>
               </Card>
+                <Button onClick={()=>this.editForm()} >Editer Compte</Button>
+                <Button onClick={()=>this.deleteAccount()} style={{marginLeft:5+"em"}}>Supprimer Compte</Button>
                   {this.state.displayForm && this.displayForm(this.state.displayForm, data)}
             </Col>
           </Container>
