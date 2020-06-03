@@ -48,8 +48,10 @@ export class Dashboard extends React.Component {
               <div>            
                 {this.state.allMessage.map(message => (
                   <Col sm={4} md="auto" key={message._id} >
-                    <Card onClick={()=> this.getOneMessage(message._id)} >
-                      <img alt={message.petName} src={message.petPic} style={{width: "95%", height: "12em", objectFit: "cover", marginTop: 0.5+"em"}}/>
+                    <Card onClick={()=> this.getOneMessage(message._id)} className="myCard">
+                      <div className="cardImgBgDash">
+                        <img alt={message.petName} src={message.petPic} className="myCardImg"/>
+                      </div>
 
                       <div>
                         <Card.Body>

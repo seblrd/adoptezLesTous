@@ -91,6 +91,7 @@ export class DetailMessage extends React.Component {
         await API.modifyMessage(this.state.dataOneMessage._id, this.state.dataOneMessage);
         console.log("Message modifié")
         alert("Message modifié")
+        window.location.reload()
       } catch (error) {
         console.log('Les modifications ont échouées' + error)
         alert("Les modifications ont échouées: \n" + error)
@@ -212,8 +213,10 @@ export class DetailMessage extends React.Component {
       <div>
         <Container>
         <div>
-            <Card style={{ width: 'auto' }} >
-              <img alt={data.petName} src={data.petPic} style={{width: "100%", height: "30em", objectFit: "contain", marginTop: 0.5+"em"}}/>
+            <Card style={{ width: 'auto' }} className="myCard">
+              <div className="cardImgBg">
+                <img alt={data.petName} src={data.petPic} className='myCardImgDetail'/>
+              </div>
               <div>
                 <Card.Body>
                   <div style={{marginBottom:1+"em",marginTop:.5+"em"}}>
