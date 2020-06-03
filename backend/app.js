@@ -7,6 +7,7 @@ var logger = require('morgan');
 var authRouter = require('./src/routes/auth');
 var dashboardRouter = require('./src/routes/dashboard');
 var accountRouter = require('./src/routes/account');
+var finderRouter = require('./src/routes/finder');
 var dbConnect = require('./dbConnect');
 
 var app = express();
@@ -37,6 +38,7 @@ app.use(function(req, res, next) {
 app.use('/', dashboardRouter);
 app.use('/auth', authRouter);
 app.use('/account', accountRouter);
+app.use('/finder', finderRouter);
 app.use("/images", express.static(path.join(__dirname,'images')));
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

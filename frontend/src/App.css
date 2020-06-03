@@ -47,15 +47,15 @@
 }
 .myCardImg{
   width: 95%;
-  height: 12em;
-  object-fit: contain;
+  height: 12rem;
+  object-fit: cover;
   margin-top: 0.5em;
   border-radius: 8px;
 }
 .myCardImgDetail{
   max-width: 95%;
   height: 25em;
-  object-fit: contain;
+  object-fit: cover;
   margin-top: 0.5em;
   border-radius: 8px;
 }
@@ -65,7 +65,7 @@
 .cardImgBg{
   background-color: rgb(233, 247, 255);
   width: fit-content;
-  height: fit-content;
+  max-height: fit-content;
   padding-bottom: 2em;
   margin: auto;
   padding-top: 1.5em;
@@ -80,4 +80,8 @@
   margin-top: 1.5em;
   margin-left: .5em;
   margin-right: .5em;
+}
+.myFinder{
+  background-color: rgb(211, 238, 255);
+  margin-left: auto;
 }

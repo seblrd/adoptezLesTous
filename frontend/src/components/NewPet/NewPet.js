@@ -10,7 +10,7 @@ export class NewPet extends React.Component {
     petLocation: '',
     petImg: '',
     petName: '',
-    petType: 'chien',
+    petType: 'dog',
     petAge: '',
     petBreed: '',
     petSexe: 'male',
