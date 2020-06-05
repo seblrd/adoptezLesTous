@@ -4,12 +4,14 @@ async function postMessage (req, res, next) {
   today = new Date();
   date = today.toLocaleDateString();
   time = today.toLocaleTimeString("fr-FR");
-  dateTime = date+' '+time;
+  dateTime = date +' '+ time;
   const message = new Message({
     ...req.body,
     date: dateTime,
-    lastModif: dateTime
-  });
+    lastModif: dateTime,
+    adopted: false,
+    petPic: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+  });  
   message.save()
     .then(() => res.status(201).json({ message: 'Message posted' }))
     .catch(error => res.status(500).json({ error }));
@@ -32,13 +34,33 @@ async function getOneMessage (req, res, next) {
       }
       res.status(201).json({ message });
     })
-    .catch(error => res.status(500).json({ error }));
+    .catch(error => res.status(500).json({ error:"Aucun résultat pour cet id là." }));
 };
 
 async function editOneMessage (req, res, next) {
-  Message.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id})
-    .then(() => res.status(201).json({message: "Message modifié"}))
-    .catch(error => res.status(400).json({error}));
+  today = new Date();
+  date = today.toLocaleDateString();
+  time = today.toLocaleTimeString("fr-FR");
+  dateTime = date+' '+time;
+  if(typeof req.file === 'undefined'){
+    Message.updateOne({ _id: req.params.id },
+      { ...req.body,
+       lastModif: dateTime,
+       _id: req.params.id
+     })
+     .then(() => res.status(201).json({message: "Message modifié"}))
+     .catch(error => res.status(400).json({error}));
+  }
+  if(typeof req.file !== 'undefined'){
+    Message.updateOne({ _id: req.params.id },
+      { ...req.body,
+       lastModif: dateTime,
+       _id: req.params.id,
+       petPic: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+     })
+     .then(() => res.status(201).json({message: "Message modifié"}))
+     .catch(error => res.status(400).json({error}));
+  };
 };
 async function deleteOneMessage (req, res, next) {
   Message.deleteOne({ _id: req.params.id })

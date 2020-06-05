@@ -5,23 +5,23 @@ const bcrypt = require('bcrypt');
 async function register (req, res, next) {
   if(validate(req, res, next) !='')
   {
-    err = validate(req, res, next)
-    console.log('valid = ' + err)
+    err = validate(req)
     return res.status(401).json({ error: err });
   }
   bcrypt.hash(req.body.password, 10)
     .then(hash => {
       const user = new User({
-        email: req.body.email,
+        ...req.body,
         password: hash,
         admin: false,
-        username: req.body.username
+        ban: false
       });
       user.save()
         .then(() => res.status(201).json({
           userId: user._id,
           username: user.username,
           admin: user.admin,
+          phoneNumber: user.phoneNumber,
           token: jwt.sign(
             { userId: user._id },
             'RANDOM_TOKEN_SECRET',
@@ -37,7 +37,6 @@ async function login (req, res, next) {
     User.findOne({ email: req.body.email })
       .then(user => {
         if (!user) {
-          // return res.error('Utilisateur non trouvé !').status(401);
           return res.status(401).json({ error: 'Utilisateur non trouvé !' });
         }
         bcrypt.compare(req.body.password, user.password)
@@ -69,8 +68,8 @@ function validate(req, res, next)
 {
   err = '';
   reg = '#^[a-zA-Z0-9]+@[a-zA-Z]{2,}\.[a-z]{2,4}$#';
-  if (!req.body.username || req.body.username.length < 3 || req.body.username.length > 10) {
-    err = err  + "Invalid 'username' field, Must have more than 3 characters and less than 10.";
+  if (!req.body.username || req.body.username.length < 3 || req.body.username.length > 20) {
+    err = err  + "Invalid 'username' field, Must have more than 3 characters and less than 20.";
   }
   if (!req.body.email || !validateEmail(req.body.email)) {
     err = err + "Invalid 'email' field, Wrong format.";
@@ -78,13 +77,13 @@ function validate(req, res, next)
   if (!req.body.password || req.body.password.length < 8 || req.body.password.length > 20) {
     err = err + "Invalid 'password' field, can't be blank and password must be between 8 and 20 characters.";
   }
-  if(req.body.confPassword !== req.body.password)
+  if(req.body.cpassword !== req.body.password)
   {
     err = err + "Invalid password confirmation.";
   }
-  if (err != '') {
-    return res.status(401).json({ error: err });
-  }
+  // if (err != '') {
+  //   return res.status(401).json({ error: err });
+  // }
   return err;
 }
 function validateEmail(email) {
