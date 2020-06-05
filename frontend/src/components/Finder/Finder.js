@@ -44,12 +44,16 @@ export class Finder extends React.Component {
       var username = user.data.user.username
       newData[i].username = username;
     }
-    this.setState({ allMessage: newData, loading: false});
+    this.setState({ allMessage: newData, stockMessage: newData, loading: false});
   };
   componentDidUpdate(prevProps, prevState){
     if(this.state.refreshMessage !== prevState.refreshMessage){
+
       console.log('Update Call')
-      this.setState({allMessage: this.state.filterMessage})
+      this.setState({
+        allMessage: this.state.filterMessage,
+        refreshMessage: false
+      })
     }
   }
   async getOneMessage(id){
@@ -105,6 +109,7 @@ export class Finder extends React.Component {
         console.log('Aucun résultat' + error)
         alert("Aucun résultat: \n" + error)
       }
+
       this.setState({modifs: false})
     };
     return(
