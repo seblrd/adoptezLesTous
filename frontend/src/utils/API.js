@@ -69,4 +69,8 @@ export default {
       .then(res=>{console.log("Successfully Deleted" + res)})
       .catch(error=>{console.log('Error in delete'+ error)})
   },
+  getFilterMessage: function(filterParams) {
+    // console.log(filterParams)
+    return axios.post(`${burl}/finder/getFilterMessage`, filterParams);
+  },
 };

@@ -15,9 +15,9 @@ export class Register extends React.Component {
     const { email, password, cpassword, username, phoneNumber } = this.state;
     try {
       if (!email || email.length === 0) throw new Error('Email format non valide ou Nul');
-      if (!password || password.length === 0 || password !== cpassword) throw new Error('Mot de passe et sa confirmation non valide ou Nulle');
+      if (!password || password.length === 0 || password !== cpassword || password.length < 8) throw new Error('Mot de passe et sa confirmation non valide ou Nulle');
       if (!username || username.length === 0) throw new Error("Nom utilisateur Incorrect");
-      if (!phoneNumber || phoneNumber.length != 10) throw new Error("Numéro de téléphone Incorrect");
+      if (!phoneNumber || phoneNumber.length !== 10) throw new Error("Numéro de téléphone Incorrect");
       const { data } = await API.register({ email, password, cpassword, username, phoneNumber });
       localStorage.setItem("token", data.token);
       localStorage.setItem("userId", data.userId);
@@ -27,24 +27,30 @@ export class Register extends React.Component {
       alert('Compte crée')
       window.location = "/";
     } catch (error) {
-      if(error.response.data.error._message === "User validation failed")
-      {
-        var err = '';
-        var myErr = error.response.data.error.errors
-        console.log(error.response.data.error.errors)
-        if(myErr.email)
-          err+=("Email deja utilisé \n")
-        if(myErr.phoneNumber)
-          err+=("Numéro de téléphone deja utilisé \n")
-        if(myErr.username)
-          err+=("Nom utilisateur deja utilisé \n")
-          console.log(err)
-          alert(err)
+      // var mess = error.response.data.error._message
+      var err = ''
+      if(typeof error.response !== 'undefined'){
+        var respErr = error.response.data.error
+        err +=  respErr
+
+        // console.log(respErr._message)
+
+        if(respErr._message === "User validation failed"){
+          var err = '';
+          var myErr = error.response.data.error.errors
+          if(myErr.email)
+            err+=("Email deja utilisé \n")
+          if(myErr.phoneNumber)
+            err+=("Numéro de téléphone deja utilisé \n")
+          if(myErr.username)
+            err+=("Nom utilisateur deja utilisé \n")
+        }
+        console.log(err)
+        alert(err)
+        return
       }
-      else{
-        console.log(error.response.data.error)
-        alert( error.response.data.error)
-      }
+      console.log(err)
+      alert(error)
     }
   };
   handleChange = (event) => {
@@ -67,7 +73,7 @@ export class Register extends React.Component {
           />
         </FormGroup>
         <FormGroup controlId="password" size="large">
-          <FormLabel>Mot de Passe</FormLabel>
+          <FormLabel>Mot de Passe <small> (8 caratères minimum)</small></FormLabel>
           <FormControl
             value={password}
             onChange={this.handleChange}

@@ -27,7 +27,6 @@ export class Dashboard extends React.Component {
     this.setState({ allMessage: sortedData.message, loading: false});
     var newData = this.state.allMessage
     for (var i = 0; i < newData.length; i++){
-      // console.log(newData[i].username)
       var user = await API.getInfo(newData[i].usernameId);
       var username = user.data.user.username
       newData[i].username = username;
@@ -48,7 +47,7 @@ export class Dashboard extends React.Component {
               <div>            
                 {this.state.allMessage.map(message => (
                   <Col sm={4} md="auto" key={message._id} >
-                    <Card onClick={()=> this.getOneMessage(message._id)} className="myCard">
+                    <Card onClick={()=> {this.getOneMessage(message._id)}} className="myCard">
                       <div className="cardImgBgDash">
                         <img alt={message.petName} src={message.petPic} className="myCardImg"/>
                       </div>
@@ -70,7 +69,6 @@ export class Dashboard extends React.Component {
             </div>
           </div>
         </Container>
-        <h2>Les derniers adoptés !</h2>
       </div>
     );
     

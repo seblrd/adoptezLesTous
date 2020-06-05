@@ -7,7 +7,6 @@ export class Account extends React.Component {
   state = {
     loading: true,
     userInfo: [],
-    username: localStorage.getItem('username'),
     userId: localStorage.getItem('userId'),
     displayForm: false,
     modifs: false,
@@ -137,7 +136,7 @@ export class Account extends React.Component {
   }
   render() {
     const data = this.state.userInfo;
-    const { email, password, cpassword, username, phoneNumber } = this.state;
+    // const { email, password, cpassword, phoneNumber } = this.state;
     return (
       <div>
           <Container style={{width: "50em"}}>

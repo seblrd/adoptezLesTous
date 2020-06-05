@@ -13,13 +13,20 @@ export class Finder extends React.Component {
     petLocation: '',
     petType: '',
     petAge: '',
+    petLocation: '',
     petSexe: '',
-    displaySideBar: true
+    petBreed: '',
+    petAgeSign: 'more',
+    displaySideBar: true,
+    modifs: false,
+    getAllBreed: '',
+    refreshMessage: false,
+    filterMessage: []
   }
   handleChange = (event) => {
-    // console.log([event.target.id] + " "+ event.target.value)
     this.setState({
-      [event.target.id]: event.target.value
+      [event.target.id]: event.target.value,
+      modifs: true
     });
   };
   async componentDidMount(){
@@ -39,12 +46,67 @@ export class Finder extends React.Component {
     }
     this.setState({ allMessage: newData, loading: false});
   };
+  componentDidUpdate(prevProps, prevState){
+    if(this.state.refreshMessage !== prevState.refreshMessage){
+      console.log('Update Call')
+      this.setState({allMessage: this.state.filterMessage})
+    }
+  }
   async getOneMessage(id){
     localStorage.setItem('idMess', id)
     window.location = "/"+ id;    
   }
   sideBar(){
-    const{ petSexe, petType } = ''; 
+    const{ petSexe, petType, petAge, petBreed, petAgeSign, petLocation } = this.state;
+
+    var getAllBreed = ()=>{
+      var breeds = this.state.allMessage
+      var uniqueBreeds = [];
+      copyUniqueBoucle: for(var element in breeds){
+        for(var uBreed in uniqueBreeds){
+          if(uniqueBreeds[uBreed] === breeds[element].petBreed || breeds[element].petBreed ===  ''){
+            continue copyUniqueBoucle
+          }
+        }
+        uniqueBreeds.push(breeds[element].petBreed)
+      }
+      return(
+        uniqueBreeds.map(message => (
+          <option key={message} value={message}> {message} </option>
+        ))
+      )
+    }
+    var getAllLocation = ()=>{
+      var locations = this.state.allMessage
+      var uniqueLocation = [];
+      copyUniqueBoucle: for(var element in locations){
+        for(var uLocation in uniqueLocation){
+          if(uniqueLocation[uLocation] === locations[element].petLocation || locations[element].petLocation ===  ''){
+            continue copyUniqueBoucle
+          }
+        }
+        uniqueLocation.push(locations[element].petLocation)
+      }
+      return(
+        uniqueLocation.map(message => (
+          <option key={message} value={message}> {message} </option>
+        ))
+      )
+    }
+    var filterMessage = async () => {
+      try{
+        if(this.state.modifs === false){
+          throw Error('Aucune Modification')
+        }
+        const{ petSexe, petType, petAge, petBreed, petAgeSign, petLocation  } = this.state; 
+        var filter = await API.getFilterMessage({ petSexe, petType, petAge, petBreed, petLocation });
+        this.setState({filterMessage: filter.data.message, refreshMessage: true})
+      } catch (error) {
+        console.log('Aucun résultat' + error)
+        alert("Aucun résultat: \n" + error)
+      }
+      this.setState({modifs: false})
+    };
     return(
       <div>
         <Container>
@@ -64,6 +126,7 @@ export class Finder extends React.Component {
                 </Form.Control>
               </Col>
             </Form.Group>
+
             <Form.Group controlId="petSexe" as={Row}>
               <Form.Label column="true" sm="4">Sexe</Form.Label>
               <Col sm="8">
@@ -77,7 +140,32 @@ export class Finder extends React.Component {
               </Col>
             </Form.Group>
 
-            <Button onClick={()=>this.send}> Valider</Button>
+            
+            <Form.Group controlId="petBreed" as={Row}>
+              <Form.Label column="true" sm="4">Race</Form.Label>
+              <Col sm="8">
+                <Form.Control as="select" 
+                value={petBreed}
+                onChange={this.handleChange}>
+                  <option value=''>Tous</option>
+                  {getAllBreed()}
+                </Form.Control>
+              </Col>
+            </Form.Group>
+
+            <Form.Group controlId="petLocation" as={Row}>
+              <Form.Label column="true" sm="4">Localisation</Form.Label>
+              <Col sm="8">
+                <Form.Control as="select" 
+                value={petLocation}
+                onChange={this.handleChange}>
+                  <option value=''>Tous</option>
+                  {getAllLocation()}
+                </Form.Control>
+              </Col>
+            </Form.Group>
+
+            <Button onClick={filterMessage}  variant="primary" type="submit"> Valider</Button>
 
           </Card>
         </Container>
@@ -85,7 +173,6 @@ export class Finder extends React.Component {
     )
   }
   render() {
-    console.log(this.state.petType)
     return (
       <div>
         <h2> Rechercher</h2>
@@ -103,7 +190,7 @@ export class Finder extends React.Component {
                 <div>            
                   {this.state.allMessage.map(message => (
                     <Col sm={4} md="auto" key={message._id} >
-                      <Card onClick={()=> this.getOneMessage(message._id)} className="myCard">
+                      <Card onClick={()=> {this.getOneMessage(message._id)}} className="myCard">
                         <div className="cardImgBgDash">
                           <img alt={message.petName} src={message.petPic} className="myCardImg"/>
                         </div>

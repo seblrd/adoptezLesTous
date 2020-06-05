@@ -6,7 +6,6 @@ import API from "../../utils/API";
 export class DetailMessage extends React.Component {
   state = {
     loading: true,
-    allMessage: [],
     bodyPostMessage: "",
     username: localStorage.getItem("username"),
     userId: localStorage.getItem('userId'),
@@ -15,29 +14,33 @@ export class DetailMessage extends React.Component {
     displayForm: false,
     modifs: false,
     phoneNumber:"",
-    email:""
+    email:"",
+    userInfo:"",
+    messId:window.location.pathname.split('/')[1],
   }
   async componentDidMount(){
     try{
-      var id = window.location.pathname.split('/')[1]
-      const oneMess = await API.getOneMessage(id);
-      this.setState({ dataOneMessage: oneMess.data.message, loading: false })
-
-      const response = await API.getInfo(this.state.dataOneMessage.usernameId);
+      const oneMess = await API.getOneMessage(this.state.messId);
+      const response = await API.getInfo(oneMess.data.message.usernameId);
       const data = response.data.user;
       var format = data['phoneNumber'];
       format = format.match(/.{1,2}/g).join(".")
       data['phoneNumber'] = format
       this.setState({
         userInfo: data,
-        loading: false,
         username: data.username,
         phoneNumber: data.phoneNumber,
-        email: data.email 
+        email: data.email ,
+        dataOneMessage: oneMess.data.message,
+        loading: false
       });
+      if(oneMess.data.message.usernameId === localStorage.getItem("userId")){
+        this.setState({isWriter: true})
+      }
       
     } catch(error){
-      alert(error)
+      console.log("load error \n" + error)
+      alert("load error \n" + error)
       window.location = "/";  
     }
   }
@@ -78,12 +81,11 @@ export class DetailMessage extends React.Component {
     });
   };
   displayForm(displayForm, props){
-    var { petSexe,description,username,petLocation,petName,petType,petAge,petBreed, usernameId, petImg } = this.state.dataOneMessage; 
+    var { petSexe,description,petLocation,petName,petType,petAge,petBreed } = this.state.dataOneMessage; 
     if (!displayForm) {
       return null;
     }
     var send = async () => {
-      var { petImg } = this.state; 
       try{
         if(this.state.modifs === false){
           throw Error('Aucune Modification')
@@ -203,12 +205,7 @@ export class DetailMessage extends React.Component {
     }
   }
   render() {
-    const data = this.state.dataOneMessage;
-    const dataUser = this.state.userInfo;
-    const isWriter = this.state.isWriter
-    if(data.usernameId === localStorage.getItem("userId")){
-      this.state.isWriter = true;
-    }
+    const data = this.state.dataOneMessage
     return (
       <div>
         <Container>
@@ -227,6 +224,7 @@ export class DetailMessage extends React.Component {
                         <li>Localisation: {data.petLocation}</li>
                         <li>Race: {data.petBreed}</li>
                         <li>Sexe: {data.petSexe}</li>
+                        <li>Type: {data.petType}</li>
                         <li>Tel: {this.state.phoneNumber}</li>
                         <li>email: {this.state.email}</li>
                       </ul>
