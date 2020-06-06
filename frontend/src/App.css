@@ -1,10 +1,16 @@
 .App {
   text-align: center;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.App-header {
+  display: flex;
+  flex-direction: column;
+  background-image: url('./assets/header_img.png');
+  background-image: 0.;
+  background-size:8em;
+  min-height: auto;
+  font-size: 2em;
+  color:black;
+  margin-bottom: 1em;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -26,7 +32,59 @@
 }
 .App-header-button {
 }
-/* .App-header-disconnect {
-  align-items: right;
-  justify-content: right;
-} */
+.App-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 4em;
+  font-size: 0.9em;
+  color:black;
+  background-color:rgba(149, 194, 209, 0.322);
+  position: absolute; 
+  bottom: 0; 
+  left: 0; 
+  right: 0;
+}
+.sr-only{
+  background-color: lightcoral;
+}
+.myCardImg{
+  width: 95%;
+  height: 12rem;
+  object-fit: cover;
+  margin-top: 0.5em;
+  border-radius: 8px;
+}
+.myCardImgDetail{
+  max-width: 95%;
+  height: 25em;
+  object-fit: cover;
+  margin-top: 0.5em;
+  border-radius: 8px;
+}
+.myCard{
+  background-color: rgb(211, 238, 255);
+}
+.cardImgBg{
+  background-color: rgb(233, 247, 255);
+  width: fit-content;
+  max-height: fit-content;
+  padding-bottom: 2em;
+  margin: auto;
+  padding-top: 1.5em;
+  margin-top: 1.5em;
+}
+.cardImgBgDash{
+  background-color: rgb(233, 247, 255);
+  width: fit-content;
+  height: fit-content;
+  padding-bottom: 2em;
+  padding-top: 1.5em;
+  margin-top: 1.5em;
+  margin-left: .5em;
+  margin-right: .5em;
+}
+.myFinder{
+  background-color: rgb(211, 238, 255);
+  margin-left: auto;
+}

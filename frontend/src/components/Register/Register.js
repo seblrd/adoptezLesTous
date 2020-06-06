@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, FormGroup, FormControl, ControlLabel} from "../../../node_modules/react-bootstrap";
+import {Button, FormGroup, FormControl, FormLabel} from "react-bootstrap";
 import API from "../../utils/API";
 
 export class Register extends React.Component {
@@ -7,21 +7,50 @@ export class Register extends React.Component {
     email: "",
     password: "",
     cpassword: "",
-    username: ""
+    username: "",
+    errorMessage:'',
+    phoneNumber:""
   };
   send = async () => {
-    const { email, password, cpassword, username } = this.state;
-    if (!email || email.length === 0) return;
-    if (!password || password.length === 0 || password !== cpassword) return;
+    const { email, password, cpassword, username, phoneNumber } = this.state;
     try {
-      const { data } = await API.register({ email, password, username });
+      if (!email || email.length === 0) throw new Error('Email format non valide ou Nul');
+      if (!password || password.length === 0 || password !== cpassword || password.length < 8) throw new Error('Mot de passe et sa confirmation non valide ou Nulle');
+      if (!username || username.length === 0) throw new Error("Nom utilisateur Incorrect");
+      if (!phoneNumber || phoneNumber.length !== 10) throw new Error("Numéro de téléphone Incorrect");
+      const { data } = await API.register({ email, password, cpassword, username, phoneNumber });
       localStorage.setItem("token", data.token);
       localStorage.setItem("userId", data.userId);
       localStorage.setItem("username", data.username);
       localStorage.setItem("admin", data.admin);
-      window.location = "/dashboard";
+      localStorage.setItem("connected", true);
+      alert('Compte crée')
+      window.location = "/";
     } catch (error) {
-      console.error(error);
+      // var mess = error.response.data.error._message
+      var err = ''
+      if(typeof error.response !== 'undefined'){
+        var respErr = error.response.data.error
+        err +=  respErr
+
+        // console.log(respErr._message)
+
+        if(respErr._message === "User validation failed"){
+          var err = '';
+          var myErr = error.response.data.error.errors
+          if(myErr.email)
+            err+=("Email deja utilisé \n")
+          if(myErr.phoneNumber)
+            err+=("Numéro de téléphone deja utilisé \n")
+          if(myErr.username)
+            err+=("Nom utilisateur deja utilisé \n")
+        }
+        console.log(err)
+        alert(err)
+        return
+      }
+      console.log(err)
+      alert(error)
     }
   };
   handleChange = (event) => {
@@ -30,44 +59,58 @@ export class Register extends React.Component {
     });
   };
   render() {
-    const { email, password, cpassword, username } = this.state;
+    const { email, password, cpassword, username, phoneNumber } = this.state;
     return (
-      <div className="Login">
-        <FormGroup controlId="email" bsSize="large">
-          <ControlLabel>Email</ControlLabel>
+      <div className="col-md-6 col-md-offset-3">
+        <FormGroup controlId="email" size="large">
+          <FormLabel>Email</FormLabel>
           <FormControl
             autoFocus
             type="email"
             value={email}
             onChange={this.handleChange}
+            placeholder="adoptezLesTous@alt.fr" 
           />
         </FormGroup>
-        <FormGroup controlId="password" bsSize="large">
-          <ControlLabel>Password</ControlLabel>
+        <FormGroup controlId="password" size="large">
+          <FormLabel>Mot de Passe <small> (8 caratères minimum)</small></FormLabel>
           <FormControl
             value={password}
             onChange={this.handleChange}
             type="password"
+            placeholder="Mot de passe..." 
           />
         </FormGroup>
-        <FormGroup controlId="cpassword" bsSize="large">
-          <ControlLabel>Confirm Password</ControlLabel>
+        <FormGroup controlId="cpassword" size="large">
+          <FormLabel> Confirmer Mot de Passe</FormLabel>
           <FormControl
             value={cpassword}
             onChange={this.handleChange}
             type="password"
+            placeholder="Confirmer mot de passe..." 
           />
         </FormGroup>
-        <FormGroup controlId="username" bsSize="large">
-          <ControlLabel>Username</ControlLabel>
+        <FormGroup controlId="username" size="large">
+          <FormLabel>Nom d'utilisateur</FormLabel>
           <FormControl
             autoFocus
             value={username}
             onChange={this.handleChange}
             type="string"
+            placeholder="Animalerie Coco" 
           />
         </FormGroup>
-        <Button onClick={this.send} block bsSize="large" type="submit">
+        <FormGroup controlId="phoneNumber" size="large">
+          <FormLabel>Numéro de téléphone</FormLabel>
+          <FormControl
+            autoFocus
+            value={phoneNumber}
+            onChange={this.handleChange}
+            type="number"
+            placeholder="06XXXXXXXX"
+          />
+        </FormGroup>
+        <Button onClick={this.send} block size="large" type="submit">
           Inscription
         </Button>
       </div>

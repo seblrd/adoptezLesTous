@@ -1,5 +1,5 @@
 import axios from "axios";
-// import { editOneMessage } from "../../../backend/src/controllers/dashboardController";
+import FormData from'form-data';
 const headers = {
   "Content-Type": "application/json"
 };
@@ -25,14 +25,15 @@ export default {
   isAuth: function() {
     return localStorage.getItem("token") !== null;
   },
-  postMessage: function(body,username) {
-    return axios.post(
-      `${burl}/dashboard/postMessage`,
-      {
-        body,
-        username
-      },
-    );
+  postMessage: function(dataMessage) {
+    let form_data = new FormData();
+    for (let key in dataMessage ) {
+      form_data.append(key, dataMessage[key]);
+    }
+    axios.post(
+      `${burl}/postMessage`,form_data)
+      .then(res=>{console.log("Succes"+res)})
+      .catch(error=>{console.log('Error', error)})
   },
   getMessage: function() {
     return axios.post(`${burl}/dashboard/getMessage`);
@@ -40,19 +41,42 @@ export default {
   logout: function() {
     localStorage.clear();
   },
-  editOneMessage: function(id,body) {
-    return axios.post(
-      `${burl}/dashboard/editOneMessage/:id`,
-      {
-        id,
-        body
-      },
-    );
+  getOneMessage: function(_id) {
+    return axios.post(`${burl}/getOneMessage/`+ _id);
   },
-  getLastMessage: function() {
-    return axios.get(`${burl}/dashboard/getLastMessage`);
+  modifyMessage: function(id, dataMessage) {
+    let form_data = new FormData();
+    for (let key in dataMessage ) {
+      form_data.append(key, dataMessage[key]);
+    }
+    axios.put(
+      `${burl}/editOneMessage/`+ id, form_data)
+      .then(res=>{console.log("Succes Modify " + res)})
+      .catch(error=>{console.log('Error in modify'+ error)})
   },
-  getLastUser: function() {
-    return axios.get(`${burl}/auth/getLastUser`);
-  }
+  deleteMessage: function(id) {
+    axios.delete(
+      `${burl}/deleteOneMessage/`+ id)
+      .then(res=>{console.log("Successfully Deleted" + res)})
+      .catch(error=>{console.log('Error in delete'+ error)})
+  },
+  getInfo: function(_id) {
+    return axios.post(`${burl}/account/getInfo/`+ _id);
+  },
+  editAccount: function(id, dataUser) {
+    axios.put(
+      `${burl}/account/editInfo/`+ id, dataUser)
+      .then(res=>{console.log("Succes Modify", res.data.message)})
+      .catch(error=>{console.log('Error in modify'+ error)})
+  },
+  deleteAccount: function(id) {
+    axios.delete(
+      `${burl}/account/deleteAccount/`+ id)
+      .then(res=>{console.log("Successfully Deleted" + res)})
+      .catch(error=>{console.log('Error in delete'+ error)})
+  },
+  getFilterMessage: function(filterParams) {
+    // console.log(filterParams)
+    return axios.post(`${burl}/finder/getFilterMessage`, filterParams);
+  },
 };

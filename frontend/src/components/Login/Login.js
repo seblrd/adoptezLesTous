@@ -23,7 +23,7 @@ export class Login extends React.Component {
       localStorage.setItem("admin", data.admin);
       window.location = "/dashboard";
     } catch (error) {
-      console.error(error);
+      alert(error.response.data.error)
     }
   };
   handleChange = (event) => {
@@ -33,10 +33,10 @@ export class Login extends React.Component {
   };
   render() {
     const { email, password } = this.state;
-    return (
-      <div className="Login">
-        <FormGroup controlId="email" bsSize="large">
-          <ControlLabel>Email</ControlLabel>
+    return (      
+      <div className="col-md-6 col-md-offset-3">
+        <FormGroup controlId="email">
+          <FormLabel>Email</FormLabel>
           <FormControl
             autoFocus
             type="email"
@@ -44,15 +44,15 @@ export class Login extends React.Component {
             onChange={this.handleChange}
           />
         </FormGroup>
-        <FormGroup controlId="password" bsSize="large">
-          <ControlLabel>Password</ControlLabel>
+        <FormGroup controlId="password">
+          <FormLabel>Password</FormLabel>
           <FormControl
             value={password}
             onChange={this.handleChange}
             type="password"
           />
         </FormGroup>
-        <Button onClick={this.send} block bsSize="large" type="submit">
+        <Button onClick={this.send} type="submit">
           Connexion
         </Button>
       </div>
