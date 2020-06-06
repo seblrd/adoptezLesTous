@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, FormGroup, FormControl, FormLabel} from "../../../node_modules/react-bootstrap";
+import {Button, FormGroup, FormControl, ControlLabel} from "../../../node_modules/react-bootstrap";
 import API from "../../utils/API";
 
 export class Register extends React.Component {
@@ -7,8 +7,7 @@ export class Register extends React.Component {
     email: "",
     password: "",
     cpassword: "",
-    username: "",
-    errorMessage:''
+    username: ""
   };
   send = async () => {
     const { email, password, cpassword, username } = this.state;
@@ -20,14 +19,9 @@ export class Register extends React.Component {
       localStorage.setItem("userId", data.userId);
       localStorage.setItem("username", data.username);
       localStorage.setItem("admin", data.admin);
-      localStorage.setItem("connected", true);
-      window.location = "/";
+      window.location = "/dashboard";
     } catch (error) {
-      this.state.hasError = true;
-      this.state.errorMessage = error.response.data.error;
-    }
-    if(this.state.hasError === true){
-      alert(this.state.errorMessage)
+      console.error(error);
     }
   };
   handleChange = (event) => {
@@ -40,7 +34,7 @@ export class Register extends React.Component {
     return (
       <div className="Login">
         <FormGroup controlId="email" bsSize="large">
-          <FormLabel>Email</FormLabel>
+          <ControlLabel>Email</ControlLabel>
           <FormControl
             autoFocus
             type="email"
@@ -49,7 +43,7 @@ export class Register extends React.Component {
           />
         </FormGroup>
         <FormGroup controlId="password" bsSize="large">
-          <FormLabel>Password</FormLabel>
+          <ControlLabel>Password</ControlLabel>
           <FormControl
             value={password}
             onChange={this.handleChange}
@@ -57,7 +51,7 @@ export class Register extends React.Component {
           />
         </FormGroup>
         <FormGroup controlId="cpassword" bsSize="large">
-          <FormLabel>Confirm Password</FormLabel>
+          <ControlLabel>Confirm Password</ControlLabel>
           <FormControl
             value={cpassword}
             onChange={this.handleChange}
@@ -65,7 +59,7 @@ export class Register extends React.Component {
           />
         </FormGroup>
         <FormGroup controlId="username" bsSize="large">
-          <FormLabel>Username</FormLabel>
+          <ControlLabel>Username</ControlLabel>
           <FormControl
             autoFocus
             value={username}
