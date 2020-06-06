@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, FormGroup, FormControl, ControlLabel} from "../../../node_modules/react-bootstrap";
+import {Button, FormGroup, FormControl, ControlLabel, FormLabel} from "../../../node_modules/react-bootstrap";
 import API from "../../utils/API";
 
 export class Login extends React.Component {
