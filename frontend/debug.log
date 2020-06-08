@@ -11,3 +11,7 @@
 [0520/120835.937:ERROR:crash_report_database_win.cc(428)] unexpected header
 [0520/142852.479:ERROR:crash_report_database_win.cc(428)] unexpected header
 [0520/145908.427:ERROR:crash_report_database_win.cc(428)] unexpected header
+[0608/143608.066:ERROR:crash_report_database_win.cc(469)] failed to stat report
+[0608/143608.066:ERROR:crash_report_database_win.cc(469)] failed to stat report
+[0608/143608.066:ERROR:crash_report_database_win.cc(469)] failed to stat report
+[0608/143608.066:ERROR:crash_report_database_win.cc(469)] failed to stat report
