@@ -3,20 +3,14 @@ import FormData from'form-data';
 const headers = {
   "Content-Type": "application/json"
 };
-const burl = "http://localhost:3000";
+const burl = "http://localhost:8000";
 
 export default {
   login: function(email, password) {
     return axios.post(
       `${burl}/auth/login`,
-      {
-        email,
-        password
-      },
-      {
-        headers: headers
-      }
-    );
+      {email,password},
+      {headers: headers})
   },
   register: function(send) {
     return axios.post(`${burl}/auth/register`, send, { headers: headers });
@@ -36,7 +30,7 @@ export default {
       .catch(error=>{console.log('Error', error)})
   },
   getMessage: function() {
-    return axios.post(`${burl}/dashboard/getMessage`);
+    return axios.post(`${burl}/getMessage`);
   },
   logout: function() {
     localStorage.clear();

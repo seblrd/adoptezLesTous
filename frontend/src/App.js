@@ -11,7 +11,6 @@ import { NewPet } from "./components/NewPet/NewPet.js";
 import { Account } from "./components/Account/Account.js";
 import { Finder } from "./components/Finder/Finder.js";
 import "./App.css";
-
 class App extends Component {
   render() {
     return (

@@ -12,25 +12,22 @@
   color:black;
   margin-bottom: 1em;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 5em;
+.App-header-button {
+  position: absolute;
+  right: 0.5em;
+  align-items: right;
+  justify-content: right;
   display: flex;
-  flex-flow: row wrap;
-  font-size: 2em;
-  color: white;
+  flex-direction: column;
+}
+.App-header-title {
+  display: flex;
+  flex-wrap: wrap;
   text-align: center;
   justify-content: center;
-  align-items: baseline;
 }
-.App-header-button {
+.App-header-opacity{
+  background: rgba(255, 255, 255, 0.8)
 }
 .App-footer {
   display: flex;

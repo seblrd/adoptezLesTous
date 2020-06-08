@@ -1,31 +1,33 @@
 import React from "react";
-import {Button, FormGroup, FormControl, ControlLabel, FormLabel} from "../../../node_modules/react-bootstrap";
+import {Button, FormGroup, FormControl, FormLabel} from "react-bootstrap";
 import API from "../../utils/API";
-
 export class Login extends React.Component {
   state = {
     email: "",
-    password: ""
+    password: "",
+    errorMessage: "",
+    hasError: false
   };
   send = async () => {
     const { email, password } = this.state;
-    if (!email || email.length === 0) {
-      return;
-    }
-    if (!password || password.length === 0) {
-      return;
-    }
+    this.state.hasError = true
     try {
       const { data } = await API.login(email, password);
       localStorage.setItem("token", data.token);
       localStorage.setItem("userId", data.userId);
       localStorage.setItem("username", data.username);
       localStorage.setItem("admin", data.admin);
-      window.location = "/dashboard";
+      localStorage.setItem("connected", true);
+      window.location = "/";
     } catch (error) {
       alert(error.response.data.error)
     }
   };
+  dispErr = ()=>{
+    return(
+      alert('bug')
+    )
+  }
   handleChange = (event) => {
     this.setState({
       [event.target.id]: event.target.value
