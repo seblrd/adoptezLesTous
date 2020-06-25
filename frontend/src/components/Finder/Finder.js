@@ -13,7 +13,6 @@ export class Finder extends React.Component {
     petLocation: '',
     petType: '',
     petAge: '',
-    petLocation: '',
     petSexe: '',
     petBreed: '',
     petAgeSign: 'more',
@@ -61,7 +60,7 @@ export class Finder extends React.Component {
     window.location = "/"+ id;    
   }
   sideBar(){
-    const{ petSexe, petType, petAge, petBreed, petAgeSign, petLocation } = this.state;
+    const{ petSexe, petType, petBreed, petLocation } = this.state;
 
     var getAllBreed = ()=>{
       var breeds = this.state.allMessage
@@ -102,7 +101,7 @@ export class Finder extends React.Component {
         if(this.state.modifs === false){
           throw Error('Aucune Modification')
         }
-        const{ petSexe, petType, petAge, petBreed, petAgeSign, petLocation  } = this.state; 
+        const{ petSexe, petType, petAge, petBreed, petLocation  } = this.state; 
         var filter = await API.getFilterMessage({ petSexe, petType, petAge, petBreed, petLocation });
         this.setState({filterMessage: filter.data.message, refreshMessage: true})
       } catch (error) {

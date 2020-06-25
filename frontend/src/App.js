@@ -27,7 +27,7 @@ class App extends Component {
                   <Route exact path="/:id" component={DetailMessage} />
               </Switch>
           </div>
-          {/* < Footerbar /> */}
+            <Footerbar />
       </div>
     );
   }

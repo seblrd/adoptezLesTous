@@ -42,7 +42,7 @@ export class Dashboard extends React.Component {
       <div>
         <Container>
           <div className="Dashboard">
-            <h2> Adoptez les ! !</h2>
+            <h2> Adoptez les !!</h2>
             <Row>
               <div>            
                 {this.state.allMessage.map(message => (

@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, FormGroup, FormControl, FormLabel} from "react-bootstrap";
+import {Button, FormGroup, FormControl, FormLabel, Container} from "react-bootstrap";
 import API from "../../utils/API";
 export class Login extends React.Component {
   state = {
@@ -36,7 +36,8 @@ export class Login extends React.Component {
   render() {
     const { email, password } = this.state;
     return (      
-      <div className="col-md-6 col-md-offset-3">
+      <div>
+        <Container>
         <FormGroup controlId="email">
           <FormLabel>Email</FormLabel>
           <FormControl
@@ -57,6 +58,7 @@ export class Login extends React.Component {
         <Button onClick={this.send} type="submit">
           Connexion
         </Button>
+        </Container>
       </div>
     );
   }

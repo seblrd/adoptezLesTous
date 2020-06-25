@@ -1,5 +1,10 @@
 .App {
-  text-align: center;
+  text-align: center;  
+}
+.App-content{
+  display: flex;
+  flex-direction: column;
+  min-height: 75vh;
 }
 .App-header {
   display: flex;
@@ -12,6 +17,7 @@
   color:black;
   margin-bottom: 1em;
 }
+
 .App-header-button {
   position: absolute;
   right: 0.5em;
@@ -37,10 +43,8 @@
   font-size: 0.9em;
   color:black;
   background-color:rgba(149, 194, 209, 0.322);
-  position: absolute; 
-  bottom: 0; 
-  left: 0; 
-  right: 0;
+  position: relative; 
+  bottom: 0;
 }
 .sr-only{
   background-color: lightcoral;

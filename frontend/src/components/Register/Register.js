@@ -36,7 +36,7 @@ export class Register extends React.Component {
         // console.log(respErr._message)
 
         if(respErr._message === "User validation failed"){
-          var err = '';
+          err = '';
           var myErr = error.response.data.error.errors
           if(myErr.email)
             err+=("Email deja utilisé \n")
