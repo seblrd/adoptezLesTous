@@ -6,7 +6,7 @@ run:
   npm install
   nodemon start
   
-open new terminal
+Open new terminal
 go to folder frontend
 run:
   npm install
