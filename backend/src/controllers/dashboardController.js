@@ -1,4 +1,5 @@
 const Message = require('../models/message')
+const fs = require('fs');
 
 async function postMessage (req, res, next) {
   today = new Date();
@@ -63,9 +64,16 @@ async function editOneMessage (req, res, next) {
   };
 };
 async function deleteOneMessage (req, res, next) {
-  Message.deleteOne({ _id: req.params.id })
-    .then(() => res.status(200).json({message: "Message supprimé"}))
-    .catch(error => res.status(400).json({error}));
+  Message.findOne({_id:req.params.id})
+  .then(message=>{
+    const filename = message.petPic.split('/images/')[1];
+    fs.unlink(`images/${filename}`, () => {
+      Message.deleteOne({ _id: req.params.id })
+        .then(() => res.status(200).json({message: "Message supprimé"}))
+        .catch(error => res.status(400).json({error}));
+    });
+  })
+  .catch(error=> res.status(400).json({error}))
 };
 
 

@@ -51,8 +51,8 @@ export default {
   deleteMessage: function(id) {
     axios.delete(
       `${burl}/deleteOneMessage/`+ id)
-      .then(res=>{console.log("Successfully Deleted" + res)})
-      .catch(error=>{console.log('Error in delete'+ error)})
+      .then(res=>{console.log("Successfully Deleted", res)})
+      .catch(error=>{console.log('Error in delete', error)})
   },
   getInfo: function(_id) {
     return axios.post(`${burl}/account/getInfo/`+ _id);
