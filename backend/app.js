@@ -8,6 +8,7 @@ var authRouter = require('./src/routes/auth');
 var dashboardRouter = require('./src/routes/dashboard');
 var accountRouter = require('./src/routes/account');
 var finderRouter = require('./src/routes/finder');
+var chatRouter = require('./src/routes/chat');
 var dbConnect = require('./dbConnect');
 
 var app = express();
@@ -39,6 +40,7 @@ app.use('/', dashboardRouter);
 app.use('/auth', authRouter);
 app.use('/account', accountRouter);
 app.use('/finder', finderRouter);
+app.use('/chat', chatRouter);
 app.use("/images", express.static(path.join(__dirname,'images')));
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

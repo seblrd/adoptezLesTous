@@ -7,7 +7,8 @@ const userSchema = mongoose.Schema({
   admin: { type: Boolean, required: true },
   username: { type: String, required: true, unique: true },
   phoneNumber: { type: String, required: true, unique: true },
-  ban:{type: Boolean, require: true}
+  ban:{type: Boolean, require: true},
+  chat:{require: false}
 });
 
 userSchema.plugin(uniqueValidator);
