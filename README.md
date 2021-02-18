@@ -1,4 +1,5 @@
 # adoptezLesTous
+Node version>=10
 
 Open terminal
 go to backend folder
