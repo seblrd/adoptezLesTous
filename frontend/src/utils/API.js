@@ -3,8 +3,8 @@ import FormData from 'form-data';
 const headers = {
   "Content-Type": "application/json"
 };
-// const burl = "http://localhost:8000";
-const burl = "http://adoptezlestousbackend.nuriwo.ovh";
+const burl = "http://localhost:8000";
+// const burl = "http://adoptezlestousbackend.nuriwo.ovh";
 
 export default {
   login: function (email, password) {
