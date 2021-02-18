@@ -1,8 +1,10 @@
 
 //Db connect
+require('dotenv').config();
 const mongoose = require('mongoose');
-var pass_db = process.env.DB_PASS
-mongoose.connect('mongodb+srv://nuriwo:' + process.env.DB_PASS + '@cluster0.h28d2.mongodb.net/test',
+var pass_db = String(process.env.DB_PASS)
+var url_db = String('mongodb+srv://nuriwo:' + pass_db + '@cluster0.h28d2.mongodb.net/test')
+mongoose.connect(url_db,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true
